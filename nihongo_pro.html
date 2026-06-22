@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="日語Pro">
+<meta name="theme-color" content="#111118">
+<title>日語Pro · Nihongo</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+:root{
+  --bg:#111118;--s1:#1A1A24;--s2:#22222E;--s3:#2A2A38;
+  --b1:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.13);
+  --t1:#F2F2FA;--t2:#9090AA;--t3:#55556A;
+  --red:#FF4D4D;--redbg:rgba(255,77,77,0.13);
+  --grn:#3ECF8E;--grnbg:rgba(62,207,142,0.13);
+  --blu:#5B8DEF;--blubg:rgba(91,141,239,0.13);
+  --amb:#F5A623;--ambbg:rgba(245,166,35,0.13);
+  --pur:#A78BFA;--purbg:rgba(167,139,250,0.13);
+  --r:14px;--rsm:8px;--rlg:20px;--rxl:26px;
+  --st:env(safe-area-inset-top,0px);
+  --sb:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--bg);color:var(--t1);font-family:'Inter',-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+.app{max-width:430px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;overflow:hidden;position:relative}
+
+/* ── NAV ── */
+.bnav{flex-shrink:0;background:var(--s1);border-top:1px solid var(--b1);display:flex;padding-bottom:var(--sb)}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 7px;border:none;background:none;cursor:pointer;opacity:0.38;transition:all 0.15s;-webkit-appearance:none}
+.nb.on{opacity:1}
+.nb .ni{font-size:20px;line-height:1;transition:transform 0.2s}
+.nb.on .ni{transform:scale(1.12)}
+.nb .nl{font-size:10px;font-weight:600;color:var(--t1);letter-spacing:0.02em}
+
+/* ── PAGES ── */
+.pages{flex:1;overflow:hidden;position:relative}
+.pg{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;display:none;flex-direction:column}
+.pg.on{display:flex}
+
+/* ── TOP BAR ── */
+.topbar{flex-shrink:0;background:var(--bg);padding:calc(var(--st)+10px) 18px 0}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--b1)}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-jp{font-family:'Noto Serif JP',serif;font-size:19px;font-weight:700}
+.logo-dot{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0;margin-bottom:2px}
+.logo-en{font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase}
+.hpills{display:flex;gap:7px}
+.hpill{display:flex;align-items:center;gap:4px;background:var(--s2);border-radius:20px;padding:5px 10px}
+.hpill-v{font-size:12px;font-weight:700;color:var(--t1)}
+.hpill-l{font-size:11px;color:var(--t2)}
+
+/* ── LEVEL SCREEN ── */
+.lvscreen{position:absolute;inset:0;background:var(--bg);z-index:400;display:flex;flex-direction:column;overflow-y:auto;padding:calc(var(--st)+28px) 22px 40px}
+.lvtitle{font-family:'Noto Serif JP',serif;font-size:26px;font-weight:700;line-height:1.35;margin-bottom:8px}
+.lvsub{font-size:14px;color:var(--t2);margin-bottom:30px;line-height:1.65}
+.lvcard{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--r);padding:15px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:all 0.15s}
+.lvcard:active{transform:scale(0.97)}
+.lvcard.sel{border-color:var(--blu);background:var(--blubg)}
+.lvbadge{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.lvname{font-size:14px;font-weight:600;margin-bottom:3px}
+.lvdesc{font-size:12px;color:var(--t2);line-height:1.45}
+.lvbtn{background:var(--blu);border:none;border-radius:var(--r);padding:15px;font-size:16px;font-weight:700;color:#fff;width:100%;margin-top:22px;cursor:pointer;transition:opacity 0.15s}
+.lvbtn:active{opacity:0.85}
+
+/* ── SECTION LABELS ── */
+.sec{padding:18px 18px 10px;font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase}
+
+/* ── HOME ── */
+.hero{background:linear-gradient(135deg,var(--s1),var(--s2));margin:14px;border-radius:var(--rlg);padding:20px;border:1px solid var(--b1);position:relative;overflow:hidden}
+.hero::after{content:'語';position:absolute;right:-14px;bottom:-18px;font-family:'Noto Serif JP',serif;font-size:108px;font-weight:700;color:rgba(255,255,255,0.03);line-height:1;pointer-events:none}
+.hero-lv{font-size:11px;font-weight:700;color:var(--t2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px}
+.hero-title{font-family:'Noto Serif JP',serif;font-size:19px;font-weight:700;margin-bottom:14px;line-height:1.4}
+.hero-stats{display:flex;gap:8px}
+.hstat{flex:1;background:var(--s3);border-radius:10px;padding:10px 12px}
+.hstat-n{font-size:20px;font-weight:700;margin-bottom:2px}
+.hstat-l{font-size:11px;color:var(--t2)}
+.qa-scroll{display:flex;gap:8px;padding:2px 18px 2px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.qa-scroll::-webkit-scrollbar{display:none}
+.qacard{flex-shrink:0;width:108px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:13px 12px;cursor:pointer;transition:transform 0.15s}
+.qacard:active{transform:scale(0.94)}
+.qa-ico{font-size:22px;margin-bottom:8px}
+.qa-lbl{font-size:13px;font-weight:600;margin-bottom:2px}
+.qa-sub{font-size:11px;color:var(--t2);line-height:1.3}
+.tlitem{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:12px 14px;margin:0 14px 8px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s}
+.tlitem:active{transform:scale(0.98)}
+.tl-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.tl-info{flex:1}
+.tl-n{font-size:14px;font-weight:600;margin-bottom:2px}
+.tl-m{font-size:12px;color:var(--t2)}
+.tl-arr{font-size:16px;color:var(--t3)}
+
+/* ── VOCAB ── */
+.catbar{display:flex;gap:6px;padding:12px 18px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;background:var(--bg)}
+.catbar::-webkit-scrollbar{display:none}
+.cchip{flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:13px;font-weight:500;border:1.5px solid var(--b1);background:transparent;color:var(--t2);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.cchip.on{background:var(--blu);border-color:var(--blu);color:#fff}
+.vtoolbar{display:flex;gap:7px;padding:0 14px 12px;flex-shrink:0}
+.vtbtn{flex:1;padding:10px 8px;border-radius:var(--rsm);font-size:12px;font-weight:600;border:none;cursor:pointer;transition:all 0.15s;-webkit-appearance:none}
+.vtbtn:active{transform:scale(0.96)}
+.vtpri{background:var(--blu);color:#fff}
+.vtsec{background:var(--s2);color:var(--t2)}
+.wlist{padding:0 14px;flex:1}
+.wcard{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);margin-bottom:8px;overflow:hidden;cursor:pointer;transition:border-color 0.2s}
+.wcard.open{border-color:var(--blu)}
+.wctop{padding:13px 15px;display:flex;align-items:center;gap:12px}
+.wcl{flex:1}
+.wcjp{font-family:'Noto Serif JP',serif;font-size:25px;font-weight:700;margin-bottom:3px}
+.wcrd{font-size:13px;color:var(--t2)}
+.wccn{font-size:14px;font-weight:500;margin-top:4px}
+.wcr{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.wclv{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px}
+.wcau{background:var(--s2);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
+.wcdet{display:none;padding:0 15px 13px}
+.wcard.open .wcdet{display:block}
+.wcex{background:var(--s2);border-radius:var(--rsm);padding:10px 12px;margin-bottom:6px;border-left:3px solid var(--blu)}
+.wcex-jp{font-size:14px;font-weight:500;margin-bottom:3px;line-height:1.5}
+.wcex-rd{font-size:12px;color:var(--t3);margin-bottom:3px}
+.wcex-cn{font-size:13px;color:var(--t2)}
+.wcex-hl{color:var(--blu);font-weight:700}
+.wctags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.wctag{font-size:11px;padding:3px 9px;border-radius:6px;font-weight:500;background:var(--s3);color:var(--t2)}
+.wcknown{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--grnbg);border:1px solid var(--grn);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:12px;font-weight:600;color:var(--grn);margin-top:8px;width:100%}
+.wcknown.done{background:var(--grn);color:#fff;border-color:var(--grn)}
+
+/* ── QUIZ OVERLAY ── */
+.quiz-ov{position:absolute;inset:0;background:var(--bg);z-index:300;display:none;flex-direction:column}
+.quiz-ov.on{display:flex}
+.qhdr{padding:calc(var(--st)+12px) 18px 12px;display:flex;align-items:center;gap:11px;flex-shrink:0}
+.qclose{background:var(--s2);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:16px;color:var(--t1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qpwrap{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden}
+.qpbar{height:100%;background:var(--blu);border-radius:3px;transition:width 0.4s}
+.qcnt{font-size:13px;font-weight:600;color:var(--t2);white-space:nowrap}
+.qbody{flex:1;overflow-y:auto;padding:8px 18px 20px;display:flex;flex-direction:column;gap:12px}
+.qmode{text-align:center;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.12em;text-transform:uppercase;padding-top:2px}
+
+/* flip card */
+.flipwrap{perspective:900px;cursor:pointer;flex-shrink:0}
+.flipinner{position:relative;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(.2,.85,.32,1.2);border-radius:var(--rlg);min-height:238px}
+.flipwrap.flipped .flipinner{transform:rotateY(180deg)}
+.flipf,.flipb{backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--rlg);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px 20px;min-height:238px;width:100%}
+.flipf{background:var(--s1);border:1px solid var(--b1)}
+.flipb{position:absolute;top:0;left:0;right:0;transform:rotateY(180deg);background:linear-gradient(140deg,#161630,var(--bg));border:1px solid var(--blu)}
+.ff-hint{font-size:11px;color:var(--t3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:18px}
+.ff-word{font-family:'Noto Serif JP',serif;font-size:58px;font-weight:700;line-height:1;margin-bottom:8px}
+.ff-read{font-size:14px;color:var(--t2)}
+.fb-lv{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:12px}
+.fb-cn{font-size:26px;font-weight:700;margin-bottom:8px}
+.fb-ex{background:rgba(255,255,255,0.05);border-radius:10px;padding:10px 13px;font-size:13px;color:var(--t2);line-height:1.6;text-align:left;width:100%;margin-top:4px}
+.fb-hl{color:var(--blu);font-weight:700}
+.rbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0}
+.rb{border:none;border-radius:var(--r);padding:14px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;-webkit-appearance:none}
+.rb:active{transform:scale(0.95)}
+.rb-again{background:var(--redbg);color:var(--red)}
+.rb-good{background:var(--grnbg);color:var(--grn)}
+.rb-easy{background:var(--blubg);color:var(--blu);grid-column:1/-1}
+
+/* MCQ */
+.mcqstem{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rlg);padding:24px 20px;text-align:center;flex-shrink:0}
+.mcqword{font-family:'Noto Serif JP',serif;font-size:52px;font-weight:700;line-height:1;margin-bottom:7px}
+.mcqread{font-size:14px;color:var(--t2);margin-bottom:10px}
+.mcqau{background:var(--s2);border:none;border-radius:20px;padding:6px 14px;font-size:13px;color:var(--t2);cursor:pointer;-webkit-appearance:none}
+.mcqopts{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0}
+.mcqopt{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--r);padding:13px 10px;cursor:pointer;font-size:14px;font-weight:500;text-align:center;transition:all 0.15s;-webkit-appearance:none;color:var(--t1)}
+.mcqopt:active{transform:scale(0.96)}
+.mcqopt.ok{background:var(--grnbg);border-color:var(--grn);color:var(--grn)}
+.mcqopt.ng{background:var(--redbg);border-color:var(--red);color:var(--red)}
+.exbox{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:12px 14px;flex-shrink:0}
+.exbox-t{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.08em;margin-bottom:7px}
+.exbox-jp{font-size:14px;color:var(--t1);line-height:1.6;margin-bottom:3px}
+.exbox-cn{font-size:12px;color:var(--t2)}
+
+/* listen quiz */
+.lsitem{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rlg);padding:22px 20px;text-align:center;flex-shrink:0}
+.lplay{width:66px;height:66px;border-radius:50%;background:var(--blu);border:none;cursor:pointer;font-size:24px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(91,141,239,0.4);-webkit-appearance:none}
+.lplay:active{transform:scale(0.91)}
+.lplay.on{animation:pulseblu 1.5s infinite}
+@keyframes pulseblu{0%{box-shadow:0 0 0 0 rgba(91,141,239,0.5)}70%{box-shadow:0 0 0 15px rgba(91,141,239,0)}100%{box-shadow:0 0 0 0 rgba(91,141,239,0)}}
+.wavrow{display:flex;align-items:center;justify-content:center;gap:3px;height:28px;margin-bottom:10px}
+.wbar{width:4px;border-radius:2px;background:var(--s3);transition:height 0.1s}
+.wbar.on{background:var(--blu)}
+.lshint{font-size:12px;color:var(--t3)}
+.lstext{font-family:'Noto Serif JP',serif;font-size:18px;margin-top:8px;min-height:26px}
+.lsread{font-size:12px;color:var(--t3);margin-top:3px;min-height:18px}
+.lsopts{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.lsopt{background:var(--s1);border:1.5px solid var(--b1);border-radius:var(--r);padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.15s;-webkit-appearance:none}
+.lsopt:active{transform:scale(0.97)}
+.lsopt-ltr{width:24px;height:24px;border-radius:6px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--t2);flex-shrink:0}
+.lsopt-txt{font-size:14px;color:var(--t1)}
+.lsopt.ok{border-color:var(--grn);background:var(--grnbg)}
+.lsopt.ok .lsopt-ltr{background:var(--grn);color:#fff}
+.lsopt.ng{border-color:var(--red);background:var(--redbg)}
+.lsopt.ng .lsopt-ltr{background:var(--red);color:#fff}
+
+/* wrong panel */
+.wrongpanel{background:var(--redbg);border:1px solid var(--red);border-radius:var(--r);padding:12px 14px;flex-shrink:0}
+.wp-t{font-size:12px;font-weight:700;color:var(--red);margin-bottom:8px}
+.wp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.wp-chip{background:var(--s1);border:1px solid var(--b1);border-radius:7px;padding:4px 10px;font-size:13px;font-weight:500;cursor:pointer}
+
+/* result */
+.resultsc{display:flex;flex-direction:column;align-items:center;padding:50px 22px 30px;text-align:center;min-height:400px}
+.res-em{font-size:64px;margin-bottom:14px}
+.res-title{font-family:'Noto Serif JP',serif;font-size:24px;font-weight:700;margin-bottom:6px}
+.res-sub{font-size:15px;color:var(--t2);margin-bottom:28px}
+.resstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-bottom:20px}
+.rsstat{background:var(--s1);border-radius:var(--r);padding:14px 10px;text-align:center}
+.rsstat-n{font-size:24px;font-weight:700;margin-bottom:4px}
+.rsstat-l{font-size:11px;color:var(--t2)}
+.wrongsec{background:var(--s1);border-radius:var(--r);padding:14px 16px;width:100%;text-align:left;margin-bottom:14px}
+.wrongsec-t{font-size:12px;font-weight:700;color:var(--red);margin-bottom:10px}
+.wrongitem{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--b1)}
+.wrongitem:last-child{border:none}
+.wi-jp{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;min-width:52px}
+.wi-info{flex:1}
+.wi-cn{font-size:13px;color:var(--t2)}
+.wi-au{background:none;border:none;cursor:pointer;font-size:15px;color:var(--t2)}
+.resbtns{display:flex;flex-direction:column;gap:8px;width:100%}
+.resbtn{padding:14px;border-radius:var(--r);font-size:15px;font-weight:600;border:none;cursor:pointer;-webkit-appearance:none;transition:opacity 0.15s}
+.resbtn:active{opacity:0.83}
+.resbtn-p{background:var(--blu);color:#fff}
+.resbtn-r{background:var(--redbg);color:var(--red);border:1px solid var(--red)}
+.resbtn-s{background:var(--s2);color:var(--t2)}
+
+/* ── DIALOG ── */
+.scenegrip{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px}
+.scard{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:14px 12px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;min-height:120px}
+.scard:active{transform:scale(0.95)}
+.sc-e{font-size:26px;margin-bottom:7px}
+.sc-t{font-size:13px;font-weight:600;margin-bottom:3px;line-height:1.3}
+.sc-sub{font-size:11px;color:var(--t3);margin-bottom:5px;line-height:1.3}
+.sc-lv{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;display:inline-block}
+.sc-done{position:absolute;top:8px;right:8px;font-size:13px}
+.convopanel{position:absolute;inset:0;background:var(--bg);z-index:200;display:none;flex-direction:column}
+.convopanel.on{display:flex}
+.convohdr{background:var(--s1);border-bottom:1px solid var(--b1);padding:calc(var(--st)+10px) 16px 12px;display:flex;align-items:center;gap:11px;flex-shrink:0}
+.cback{background:var(--s2);border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:16px;color:var(--t1);display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-appearance:none}
+.cav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--s2);flex-shrink:0}
+.cname{font-size:14px;font-weight:600;margin-bottom:2px}
+.cstatus{font-size:11px;color:var(--grn);display:flex;align-items:center;gap:4px}
+.cstatus::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--grn)}
+.cmsgs{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.mrow{display:flex;gap:8px;align-items:flex-end}
+.mrow.me{flex-direction:row-reverse}
+.mav{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:var(--s2)}
+.bubble{max-width:80%;background:var(--s1);border:1px solid var(--b1);border-radius:14px 14px 14px 4px;padding:9px 13px}
+.mrow.me .bubble{background:var(--blu);border-color:var(--blu);border-radius:14px 14px 4px 14px}
+.b-jp{font-size:15px;font-weight:600;line-height:1.4}
+.mrow.me .b-jp{color:#fff}
+.b-rd{font-size:11px;color:var(--t3);margin-top:2px}
+.mrow.me .b-rd{color:rgba(255,255,255,0.48)}
+.b-cn{font-size:12px;color:var(--t2);margin-top:3px}
+.mrow.me .b-cn{color:rgba(255,255,255,0.62)}
+.b-sp{background:none;border:none;cursor:pointer;font-size:13px;margin-top:4px;padding:0;opacity:0.5}
+.choicearea{flex-shrink:0;background:var(--s1);border-top:1px solid var(--b1);padding:12px 16px;max-height:260px;overflow-y:auto}
+.ca-hint{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
+.cbtn{background:var(--s2);border:1.5px solid var(--b1);border-radius:var(--rsm);padding:10px 14px;margin-bottom:7px;cursor:pointer;transition:all 0.15s;display:block;width:100%;text-align:left;-webkit-appearance:none}
+.cbtn:last-child{margin-bottom:0}
+.cbtn:active{transform:scale(0.97)}
+.cbtn.ok{border-color:var(--grn);background:var(--grnbg)}
+.cbtn.ng{border-color:var(--red);background:var(--redbg)}
+.cb-jp{font-size:14px;font-weight:600;color:var(--t1)}
+.cbtn.ok .cb-jp{color:var(--grn)}
+.cbtn.ng .cb-jp{color:var(--red)}
+.cb-cn{font-size:12px;color:var(--t2);margin-top:2px}
+
+/* voice input */
+.voicearea{flex-shrink:0;background:var(--s1);border-top:1px solid var(--b1);padding:12px 16px}
+.vprompt{font-size:13px;color:var(--t2);margin-bottom:10px;text-align:center}
+.vrow{display:flex;gap:8px;align-items:flex-start}
+.vbtn{width:50px;height:50px;border-radius:50%;background:var(--red);border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;-webkit-appearance:none}
+.vbtn:active{transform:scale(0.9)}
+.vbtn.rec{animation:pulsered 1s infinite;background:#ff2020}
+@keyframes pulsered{0%{box-shadow:0 0 0 0 rgba(255,77,77,0.5)}70%{box-shadow:0 0 0 14px rgba(255,77,77,0)}100%{box-shadow:0 0 0 0 rgba(255,77,77,0)}}
+.vtranscript{flex:1;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:9px 12px;font-size:14px;color:var(--t1);min-height:44px;line-height:1.5}
+.vsend{background:var(--blu);border:none;border-radius:10px;padding:10px 14px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0;-webkit-appearance:none}
+.vtxt{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:8px 12px;color:var(--t1);font-size:14px;margin-top:8px;outline:none;font-family:inherit}
+.vtxt::placeholder{color:var(--t3)}
+
+/* ── LISTEN SCREEN ── */
+.listencard{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rlg);margin:14px;padding:22px 20px;text-align:center;flex-shrink:0}
+.lc-n{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px}
+.lc-wave{display:flex;align-items:center;justify-content:center;gap:3px;height:32px;margin-bottom:16px}
+.lc-play{width:62px;height:62px;border-radius:50%;background:var(--blu);border:none;cursor:pointer;font-size:22px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(91,141,239,0.38);-webkit-appearance:none}
+.lc-play:active{transform:scale(0.91)}
+.lc-play.on{animation:pulseblu 1.5s infinite}
+.lc-text{font-family:'Noto Serif JP',serif;font-size:18px;margin-top:8px;min-height:28px}
+.lc-read{font-size:12px;color:var(--t3);margin-top:3px;min-height:18px}
+.lsopts-wrap{padding:0 14px}
+.lsopts-title{font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase;margin:0 0 10px}
+
+/* ── GRAMMAR ── */
+.gltabs{display:flex;background:var(--s1);border-bottom:1px solid var(--b1);flex-shrink:0}
+.glt{flex:1;padding:11px;text-align:center;font-size:13px;font-weight:600;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
+.glt.on{color:var(--blu);border-bottom-color:var(--blu)}
+.gcard{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);margin:0 14px 10px;overflow:hidden}
+.gctop{padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.gcnum{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.gctitle{font-size:15px;font-weight:700;margin-bottom:2px}
+.gckey{font-size:12px;color:var(--t2)}
+.gcbody{padding:0 16px 15px}
+.gcdesc{font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:12px}
+.gcex{background:var(--s2);border-radius:var(--rsm);padding:11px 13px;border-left:3px solid var(--blu)}
+.gc-jp{font-family:'Noto Serif JP',serif;font-size:16px;line-height:1.5;margin-bottom:3px}
+.gc-rd{font-size:11px;color:var(--t3);margin-bottom:4px}
+.gc-cn{font-size:13px;color:var(--t2)}
+.gc-hl{color:var(--blu);font-weight:700}
+.gcfoot{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.gclv{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px}
+.gcspbtn{background:var(--s3);border:none;border-radius:8px;padding:5px 10px;font-size:12px;color:var(--t2);cursor:pointer;display:flex;align-items:center;gap:4px;-webkit-appearance:none}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:calc(var(--sb)+76px);left:50%;transform:translateX(-50%) translateY(8px);background:var(--s3);color:var(--t1);padding:9px 18px;border-radius:20px;font-size:13px;font-weight:500;opacity:0;transition:all 0.25s;pointer-events:none;z-index:9999;white-space:nowrap;border:1px solid var(--b2)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.aiload{display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px 20px;text-align:center}
+.aispin{width:36px;height:36px;border-radius:50%;border:3px solid var(--s3);border-top-color:var(--blu);animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.aiload-t{font-size:13px;color:var(--t2);line-height:1.5}
+
+/* ── FILL BLANK QUIZ ── */
+.fbstem{background:var(--s1);border:1px solid var(--b1);border-radius:var(--rlg);padding:24px 20px;text-align:center;flex-shrink:0}
+.fb-prompt{font-size:13px;color:var(--t3);margin-bottom:14px}
+.fb-sentence{font-size:18px;font-weight:500;line-height:1.7;margin-bottom:6px}
+.fb-hint{font-size:13px;color:var(--t2);margin-bottom:16px}
+.fb-inp{width:100%;background:var(--s2);border:1.5px solid var(--b2);border-radius:10px;padding:13px 16px;font-size:16px;color:var(--t1);outline:none;font-family:inherit;-webkit-appearance:none;text-align:center}
+.fb-inp:focus{border-color:var(--blu)}
+.fb-inp.ok{border-color:var(--grn);background:var(--grnbg)}
+.fb-inp.ng{border-color:var(--red);background:var(--redbg)}
+.fb-submit{background:var(--blu);border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:600;color:#fff;width:100%;cursor:pointer;margin-top:10px;-webkit-appearance:none}
+.fb-submit:active{opacity:0.85}
+.fb-result{font-size:14px;font-weight:600;margin-top:10px;min-height:20px;text-align:center}
+
+/* ── API SETTINGS ── */
+.settings-btn{position:fixed;top:calc(var(--st)+12px);right:18px;background:var(--s2);border:1px solid var(--b1);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;z-index:500;display:none}
+.settings-modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:600;display:none;align-items:flex-end}
+.settings-modal.on{display:flex}
+.settings-sheet{background:var(--s1);border-radius:var(--rlg) var(--rlg) 0 0;padding:24px 20px calc(24px + var(--sb));width:100%;max-height:80vh;overflow-y:auto}
+.ss-title{font-size:17px;font-weight:700;margin-bottom:6px}
+.ss-sub{font-size:13px;color:var(--t2);margin-bottom:20px;line-height:1.6}
+.ss-label{font-size:12px;font-weight:600;color:var(--t2);margin-bottom:6px;display:block}
+.ss-input{width:100%;background:var(--s2);border:1.5px solid var(--b1);border-radius:10px;padding:11px 14px;font-size:14px;color:var(--t1);outline:none;margin-bottom:14px;font-family:inherit}
+.ss-input:focus{border-color:var(--blu)}
+.ss-btn{background:var(--blu);border:none;border-radius:var(--r);padding:13px;font-size:15px;font-weight:600;color:#fff;width:100%;cursor:pointer;margin-bottom:10px;-webkit-appearance:none}
+.ss-close{background:var(--s2);border:none;border-radius:var(--r);padding:13px;font-size:15px;font-weight:600;color:var(--t2);width:100%;cursor:pointer;-webkit-appearance:none}
+.ss-status{font-size:13px;text-align:center;padding:8px;border-radius:8px;margin-bottom:14px}
+.ss-status.ok{background:var(--grnbg);color:var(--grn)}
+.ss-status.ng{background:var(--redbg);color:var(--red)}
+
+/* ── SMART PROGRESS ── */
+.prog-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:14px 16px;margin:0 14px 10px}
+.pc-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.pc-label{font-size:13px;font-weight:500}
+.pc-val{font-size:12px;color:var(--t2)}
+.pc-bar{height:5px;background:var(--s3);border-radius:3px;overflow:hidden}
+.pc-fill{height:100%;border-radius:3px;transition:width 0.8s ease}
+
+/* ── WORD DETAIL ENHANCED ── */
+.wc-gen-ex{background:var(--s3);border-radius:var(--rsm);padding:9px 12px;margin-top:8px;border-left:3px solid var(--pur)}
+.wc-gen-label{font-size:10px;font-weight:700;color:var(--pur);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px}
+.wc-gen-txt{font-size:14px;color:var(--t1)}
+</style>
+</head>
+<body>
+<div class="app" id="APP">
+
+<!-- LEVEL SELECT -->
+<div class="lvscreen" id="lvscreen">
+  <div class="lvtitle">你好！<br>选择你的日语水平</div>
+  <div class="lvsub">根据你的水平，为你定制词汇量、<br>语法难度和对话场景</div>
+  <div id="lvcards"></div>
+  <button class="lvbtn" onclick="confirmLv()">开始学习 →</button>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar" id="topbar" style="display:none">
+  <div class="topbar-inner">
+    <div class="logo">
+      <span class="logo-jp">日語</span>
+      <div class="logo-dot"></div>
+      <span class="logo-en">Pro</span>
+    </div>
+    <div class="hpills">
+      <div class="hpill">⚡<span class="hpill-v" id="hxp">340</span><span class="hpill-l">XP</span></div>
+      <div class="hpill">🔥<span class="hpill-v" id="hstr">3</span><span class="hpill-l">天</span></div>
+    </div>
+    <button onclick="openSettings()" style="background:var(--s2);border:1px solid var(--b1);border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;color:var(--t2)">⚙️</button>
+  </div>
+</div>
+
+<!-- PAGES -->
+<div class="pages" id="pages" style="display:none">
+  <!-- HOME -->
+  <div class="pg on" id="pg-home">
+    <div class="hero" style="margin-top:14px">
+      <div class="hero-lv" id="hero-lv">N5 学习路径</div>
+      <div class="hero-title" id="hero-title">継続は力なり</div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-n" id="hs-w">0</div><div class="hstat-l">已学单词</div></div>
+        <div class="hstat"><div class="hstat-n" id="hs-k">18</div><div class="hstat-l">已学汉字</div></div>
+        <div class="hstat"><div class="hstat-n" id="hs-x">340</div><div class="hstat-l">总XP</div></div>
+      </div>
+    </div>
+    <div class="sec">快速练习</div>
+    <div class="qa-scroll" id="homeqa"></div>
+    <div class="sec">今日课程</div>
+    <div id="homelessons"></div>
+    <div style="height:10px"></div>
+  </div>
+
+  <!-- VOCAB -->
+  <div class="pg" id="pg-vocab">
+    <div class="catbar" id="catbar"></div>
+    <div class="vtoolbar">
+      <button class="vtbtn vtpri" onclick="startQuiz('mcq')">选义</button>
+      <button class="vtbtn vtpri" onclick="startQuiz('listen')">🎧听音</button>
+      <button class="vtbtn vtsec" onclick="startQuiz('flash')">翻卡</button>
+      <button class="vtbtn vtsec" onclick="startQuiz('fill')">填空</button>
+      <button class="vtbtn vtsec" style="background:var(--redbg);color:var(--red)" onclick="startQuiz('wrong')">错词</button>
+      <button class="vtbtn vtsec" style="background:var(--purbg);color:var(--pur)" onclick="aiGenerateVocab(ST.curCat,LVC[ST.lv].ws[0])">✨AI扩充</button>
+    </div>
+    <div class="wlist" id="wlist"></div>
+    <div style="height:10px"></div>
+  </div>
+
+  <!-- DIALOG -->
+  <div class="pg" id="pg-dialog">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 14px 10px">
+      <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:0.1em;text-transform:uppercase">选择对话场景（共<span id="scene-count">18</span>个）</div>
+      <button onclick="aiGenerateDialog()" style="background:var(--purbg);color:var(--pur);border:none;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer">✨AI新场景</button>
+    </div>
+    <div class="scenegrip" id="scenegrip"></div>
+    <div style="height:16px"></div>
+    <div class="convopanel" id="convopanel">
+      <div class="convohdr">
+        <button class="cback" onclick="closeConvo()">←</button>
+        <div class="cav" id="cav"></div>
+        <div><div class="cname" id="cname"></div><div class="cstatus">在线</div></div>
+      </div>
+      <div class="cmsgs" id="cmsgs"></div>
+      <div id="caction"></div>
+    </div>
+  </div>
+
+  <!-- LISTEN -->
+  <div class="pg" id="pg-listen">
+    <div id="listencontent"></div>
+  </div>
+
+  <!-- GRAMMAR -->
+  <div class="pg" id="pg-grammar">
+    <div class="gltabs">
+      <div class="glt on" onclick="filterG('all',this)">全部</div>
+      <div class="glt" onclick="filterG('N5',this)">N5</div>
+      <div class="glt" onclick="filterG('N4',this)">N4</div>
+      <div class="glt" onclick="filterG('N3',this)">N3</div>
+    </div>
+    <div id="glist" style="padding:14px 0"></div>
+  </div>
+</div>
+
+<!-- QUIZ OVERLAY -->
+<div class="quiz-ov" id="quiz-ov">
+  <div class="qhdr">
+    <button class="qclose" onclick="closeQuiz()">✕</button>
+    <div class="qpwrap"><div class="qpbar" id="qpbar"></div></div>
+    <div class="qcnt" id="qcnt"></div>
+  </div>
+  <div class="qbody" id="qbody"></div>
+</div>
+
+<!-- NAV -->
+<nav class="bnav" id="bnav" style="display:none">
+  <button class="nb on" id="nb-home" onclick="goPg('home')"><div class="ni">🏠</div><div class="nl">主页</div></button>
+  <button class="nb" id="nb-vocab" onclick="goPg('vocab')"><div class="ni">📚</div><div class="nl">单词</div></button>
+  <button class="nb" id="nb-dialog" onclick="goPg('dialog')"><div class="ni">💬</div><div class="nl">对话</div></button>
+  <button class="nb" id="nb-listen" onclick="goPg('listen')"><div class="ni">🎧</div><div class="nl">听力</div></button>
+  <button class="nb" id="nb-grammar" onclick="goPg('grammar')"><div class="ni">📖</div><div class="nl">语法</div></button>
+</nav>
+<!-- SETTINGS MODAL -->
+<div class="settings-modal" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="settings-sheet">
+    <div class="ss-title">⚙️ AI内容扩展设置</div>
+    <div class="ss-sub">接入Claude API可以无限生成新单词、对话和语法内容。<br><br>
+    <b>如何获取：</b>访问 console.anthropic.com → API Keys → 创建Key<br><br>
+    <b>CORS解决方案：</b>需要通过Cloudflare Worker代理（免费），
+    或部署到Vercel/Netlify。详见使用说明。</div>
+    <div id="ss-status-area"></div>
+    <label class="ss-label">Cloudflare Worker 代理地址</label>
+    <input class="ss-input" id="ss-proxy" placeholder="https://your-worker.workers.dev" 
+           value="">
+    <label class="ss-label">Claude API Key（可选，填入Worker后不需要）</label>
+    <input class="ss-input" id="ss-key" type="password" placeholder="sk-ant-...">
+    <button class="ss-btn" onclick="saveSettings()">保存并测试连接</button>
+    <button class="ss-close" onclick="closeSettings()">关闭</button>
+    <div style="margin-top:16px;padding:12px;background:var(--s2);border-radius:10px;font-size:12px;color:var(--t2);line-height:1.7">
+      <b style="color:var(--t1)">📌 无API也可以正常使用：</b><br>
+      App内置300+单词、18个对话场景、20个语法点、12道听力题。<br>
+      所有练习模式（选择、翻卡、填空、听力）均可离线使用。<br>
+      接入API后可以无限生成新内容。
+    </div>
+  </div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// ═══════════════════════════════════════════════════════════
+// CORS SOLUTION + INFINITE CONTENT ENGINE
+// ═══════════════════════════════════════════════════════════
+// 
+// CORS问题根本解决方案：
+// 独立HTML文件无法直接调用api.anthropic.com（浏览器安全策略）
+// 
+// 三种解决方案（按复杂度排序）：
+//
+// 方案1【最简单】：用 Vercel 部署一个代理（本文件包含说明）
+// 方案2【本地】：用 Node.js 起一个本地代理服务器
+// 方案3【已内置】：智能内容引擎，从现有数据无限生成变体
+//
+// ═══ 智能内容引擎（无需API，纯本地） ═══
+
+const ContentEngine = {
+  // 从单词库生成新例句
+  generateSentence(word) {
+    const templates = [
+      `毎日${word.jp}を使っています。`,
+      `${word.jp}はとても大切です。`,
+      `先生から${word.jp}を習いました。`,
+      `${word.jp}について教えてください。`,
+      `${word.jp}が好きですか？`,
+      `この${word.jp}はどこで買えますか？`,
+      `${word.jp}を使ったことがありますか？`,
+    ];
+    return templates[Math.floor(Math.random() * templates.length)];
+  },
+
+  // 生成听力题变体
+  generateListenVariant(word) {
+    const allWords = Object.values(VDB).flat();
+    const distractors = allWords
+      .filter(w => w.cn !== word.cn && w.l === word.l)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+      .map(w => w.cn);
+    const opts = [...distractors, word.cn].sort(() => Math.random() - 0.5);
+    return {
+      jp: word.jp,
+      r: word.r,
+      opts,
+      ans: opts.indexOf(word.cn),
+      l: word.l
+    };
+  },
+
+  // 无限生成MCQ题
+  getQuizPool(levelWords, count = 12) {
+    return levelWords
+      .sort(() => Math.random() - 0.5)
+      .slice(0, count);
+  },
+
+  // 生成填空题
+  generateFillBlank(word) {
+    if (!word.ex) return null;
+    const sentence = word.ex.jp;
+    const blank = sentence.replace(word.hl || word.jp, '＿＿＿');
+    return { sentence, blank, answer: word.hl || word.jp, hint: word.cn };
+  },
+
+  // 从已学单词生成复习队列（间隔重复算法简化版）
+  getReviewQueue(learned, wrong, allWords) {
+    const wrongWords = allWords.filter(w => wrong.has(w.jp));
+    const learnedWords = allWords.filter(w => learned.has(w.jp));
+    const newWords = allWords.filter(w => !learned.has(w.jp) && !wrong.has(w.jp));
+    
+    // 优先错词 > 已学（复习）> 新词
+    return [
+      ...wrongWords.slice(0, 4),
+      ...learnedWords.sort(() => Math.random() - 0.5).slice(0, 4),
+      ...newWords.slice(0, 4)
+    ].sort(() => Math.random() - 0.5).slice(0, 12);
+  }
+};
+
+// ═══ CORS代理方案（需要部署） ═══
+const API_CONFIG = {
+  // 方案A: 直接用 Cloudflare Worker（免费）
+  // 1. 登录 https://dash.cloudflare.com
+  // 2. 创建Worker，粘贴以下代码：
+  /*
+  export default {
+    async fetch(request) {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type, x-api-key, anthropic-version',
+          }
+        });
+      }
+      const body = await request.json();
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'YOUR_API_KEY_HERE',
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify(body)
+      });
+      const data = await resp.json();
+      return new Response(JSON.stringify(data), {
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
+  }
+  */
+  
+  // 3. 部署后，把Worker URL填入这里：
+  workerUrl: '', // e.g. 'https://nihongo-proxy.yourname.workers.dev'
+  
+  // 方案B: 用 Vercel Serverless Function（免费）
+  // 把这个HTML放在Vercel项目里，加一个 /api/claude.js 文件即可
+  
+  async call(prompt, systemPrompt) {
+    if (!this.workerUrl) {
+      console.log('No proxy URL set, using local content engine');
+      return null;
+    }
+    try {
+      const resp = await fetch(this.workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 800,
+          system: systemPrompt || 'You are a Japanese teacher. Reply in JSON only.',
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await resp.json();
+      const text = data.content?.map(b => b.text || '').join('') || '';
+      return JSON.parse(text.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      console.warn('API call failed:', e);
+      return null;
+    }
+  }
+};
+
+
+// ═══ CORE DATA: 300+ WORDS WITH EXAMPLES ═══
+const VDB = {
+'日常用语':[
+  {jp:'ありがとう',r:'ありがとう',cn:'谢谢',l:'N5',ex:{jp:'助けてくれてありがとう！',r:'たすけてくれてありがとう！',cn:'谢谢你帮助我！',hl:'ありがとう'}},
+  {jp:'すみません',r:'すみません',cn:'对不起/请问',l:'N5',ex:{jp:'すみません、トイレはどこですか？',r:'すみません、といれはどこですか？',cn:'打扰一下，厕所在哪里？',hl:'すみません'}},
+  {jp:'はじめまして',r:'はじめまして',cn:'初次见面',l:'N5',ex:{jp:'はじめまして、田中と申します。',r:'はじめまして、たなかともうします。',cn:'初次见面，我叫田中。',hl:'はじめまして'}},
+  {jp:'よろしくお願いします',r:'よろしくおねがいします',cn:'请多关照',l:'N5',ex:{jp:'これからよろしくお願いします。',r:'これからよろしくおねがいします。',cn:'今后请多关照。',hl:'よろしくお願いします'}},
+  {jp:'ちょっと待って',r:'ちょっとまって',cn:'等一下',l:'N5',ex:{jp:'ちょっと待って、すぐ行きます。',r:'ちょっとまって、すぐいきます。',cn:'等一下，我马上去。',hl:'ちょっと待って'}},
+  {jp:'分かりました',r:'わかりました',cn:'明白了',l:'N5',ex:{jp:'はい、分かりました。やってみます。',r:'はい、わかりました。やってみます。',cn:'是的，明白了，我来试试。',hl:'分かりました'}},
+  {jp:'大丈夫',r:'だいじょうぶ',cn:'没关系/没问题',l:'N5',ex:{jp:'転んだけど、大丈夫です。',r:'ころんだけど、だいじょうぶです。',cn:'摔倒了，但是没关系。',hl:'大丈夫'}},
+  {jp:'本当に',r:'ほんとうに',cn:'真的/真的吗',l:'N5',ex:{jp:'本当に美味しいですね！',r:'ほんとうにおいしいですね！',cn:'真的很好吃啊！',hl:'本当に'}},
+],
+'食物':[
+  {jp:'ご飯',r:'ごはん',cn:'米饭',l:'N5',tags:['名词'],ex:{jp:'毎日ご飯を三杯食べます。',r:'まいにちごはんをさんばいたべます。',cn:'每天吃三碗米饭。',hl:'ご飯'}},
+  {jp:'パン',r:'ぱん',cn:'面包',l:'N5',tags:['名词','外来语'],ex:{jp:'朝ごはんにトーストパンを食べました。',r:'あさごはんにとーすとぱんをたべました。',cn:'早饭吃了烤面包。',hl:'パン'}},
+  {jp:'ラーメン',r:'らーめん',cn:'拉面',l:'N5',tags:['名词','外来语'],ex:{jp:'寒い日はラーメンが食べたいですね。',r:'さむいひはらーめんがたべたいですね。',cn:'冷天特别想吃拉面啊。',hl:'ラーメン'}},
+  {jp:'寿司',r:'すし',cn:'寿司',l:'N5',tags:['名词'],ex:{jp:'友達と回転寿司を食べに行きました。',r:'ともだちとかいてんずしをたべにいきました。',cn:'和朋友去吃了回转寿司。',hl:'寿司'}},
+  {jp:'天ぷら',r:'てんぷら',cn:'天妇罗',l:'N4',tags:['名词'],ex:{jp:'天ぷらはサクサクしていて美味しい。',r:'てんぷらはさくさくしていておいしい。',cn:'天妇罗外皮酥脆，很好吃。',hl:'天ぷら'}},
+  {jp:'味噌汁',r:'みそしる',cn:'味噌汤',l:'N4',tags:['名词'],ex:{jp:'和食の定番は味噌汁とご飯です。',r:'わしょくのていばんはみそしるとごはんです。',cn:'日本料理的定番是味噌汤和米饭。',hl:'味噌汁'}},
+  {jp:'おにぎり',r:'おにぎり',cn:'饭团',l:'N5',tags:['名词'],ex:{jp:'コンビニでおにぎりとお茶を買いました。',r:'こんびにでおにぎりとおちゃをかいました。',cn:'在便利店买了饭团和茶。',hl:'おにぎり'}},
+  {jp:'うどん',r:'うどん',cn:'乌冬面',l:'N5',tags:['名词'],ex:{jp:'うどんは柔らかくて消化にいいです。',r:'うどんはやわらかくてしょうかにいいです。',cn:'乌冬面软滑，好消化。',hl:'うどん'}},
+  {jp:'刺身',r:'さしみ',cn:'刺身',l:'N4',tags:['名词'],ex:{jp:'新鮮な刺身は醤油とわさびで食べます。',r:'しんせんなさしみはしょうゆとわさびでたべます。',cn:'新鲜刺身蘸酱油和芥末吃。',hl:'刺身'}},
+  {jp:'弁当',r:'べんとう',cn:'便当',l:'N4',tags:['名词'],ex:{jp:'母が毎朝弁当を作ってくれます。',r:'ははがまいあさべんとうをつくってくれます。',cn:'妈妈每天早上给我做便当。',hl:'弁当'}},
+  {jp:'コーヒー',r:'こーひー',cn:'咖啡',l:'N5',tags:['名词','外来语'],ex:{jp:'毎朝コーヒーを飲まないと目が覚めません。',r:'まいあさこーひーをのまないとめがさめません。',cn:'每天早上不喝咖啡就睡不醒。',hl:'コーヒー'}},
+  {jp:'牛乳',r:'ぎゅうにゅう',cn:'牛奶',l:'N5',tags:['名词'],ex:{jp:'子供の頃は毎日牛乳を飲んでいました。',r:'こどものころはまいにちぎゅうにゅうをのんでいました。',cn:'小时候每天喝牛奶。',hl:'牛乳'}},
+  {jp:'お酒',r:'おさけ',cn:'酒',l:'N4',tags:['名词'],ex:{jp:'お酒は飲めますか？あまり強くないです。',r:'おさけはのめますか？あまりつよくないです。',cn:'你会喝酒吗？我酒量不太好。',hl:'お酒'}},
+  {jp:'砂糖',r:'さとう',cn:'砂糖',l:'N4',tags:['名词'],ex:{jp:'コーヒーに砂糖を入れますか？',r:'こーひーにさとうをいれますか？',cn:'咖啡里放糖吗？',hl:'砂糖'}},
+],
+'动词':[
+  {jp:'食べる',r:'たべる',cn:'吃',l:'N5',tags:['る动词'],ex:{jp:'何を食べたいですか？好き嫌いはありますか？',r:'なにをたべたいですか？すききらいはありますか？',cn:'你想吃什么？有没有不喜欢的食物？',hl:'食べたい'}},
+  {jp:'飲む',r:'のむ',cn:'喝',l:'N5',tags:['う动词'],ex:{jp:'薬を飲んでから少し休んでください。',r:'くすりをのんでからすこしやすんでください。',cn:'吃完药请稍微休息一下。',hl:'飲んで'}},
+  {jp:'行く',r:'いく',cn:'去',l:'N5',tags:['う动词'],ex:{jp:'明日一緒に買い物に行きませんか？',r:'あしたいっしょにかいものにいきませんか？',cn:'明天要不要一起去购物？',hl:'行きません'}},
+  {jp:'来る',r:'くる',cn:'来',l:'N5',tags:['来る(特殊)'],ex:{jp:'友達が遊びに来てくれました。',r:'ともだちがあそびにきてくれました。',cn:'朋友来找我玩了。',hl:'来て'}},
+  {jp:'見る',r:'みる',cn:'看',l:'N5',tags:['る动词'],ex:{jp:'最近面白い映画を見ましたか？',r:'さいきんおもしろいえいがをみましたか？',cn:'最近看了什么有意思的电影吗？',hl:'見ました'}},
+  {jp:'聞く',r:'きく',cn:'听/问',l:'N5',tags:['う动词'],ex:{jp:'音楽を聴きながら勉強するのが好きです。',r:'おんがくをききながらべんきょうするのがすきです。',cn:'喜欢一边听音乐一边学习。',hl:'聴きながら'}},
+  {jp:'話す',r:'はなす',cn:'说话',l:'N5',tags:['う动词'],ex:{jp:'日本語でゆっくり話してもらえますか？',r:'にほんごでゆっくりはなしてもらえますか？',cn:'能用日语慢慢说吗？',hl:'話して'}},
+  {jp:'書く',r:'かく',cn:'写',l:'N5',tags:['う动词'],ex:{jp:'漢字を正しく書くのは難しいです。',r:'かんじをただしくかくのはむずかしいです。',cn:'正确写汉字很难。',hl:'書く'}},
+  {jp:'読む',r:'よむ',cn:'读',l:'N5',tags:['う动词'],ex:{jp:'毎日30分は本を読むようにしています。',r:'まいにちさんじっぷんはほんをよむようにしています。',cn:'每天尽量读30分钟书。',hl:'読む'}},
+  {jp:'買う',r:'かう',cn:'买',l:'N5',tags:['う动词'],ex:{jp:'セールで服をたくさん買ってしまいました。',r:'せーるでふくをたくさんかってしまいました。',cn:'趁着打折买了好多衣服。',hl:'買って'}},
+  {jp:'起きる',r:'おきる',cn:'起床',l:'N5',tags:['る动词'],ex:{jp:'毎朝6時に起きるようにしています。',r:'まいあさろくじにおきるようにしています。',cn:'每天早上尽量6点起床。',hl:'起きる'}},
+  {jp:'寝る',r:'ねる',cn:'睡觉',l:'N5',tags:['る动词'],ex:{jp:'夜更かしをして寝不足になりました。',r:'よふかしをしてねぶそくになりました。',cn:'熬夜了，睡眠不足。',hl:'寝不足'}},
+  {jp:'働く',r:'はたらく',cn:'工作',l:'N4',tags:['う动词'],ex:{jp:'東京のIT会社で働いています。',r:'とうきょうのいてぃーかいしゃではたらいています。',cn:'在东京的IT公司工作。',hl:'働いて'}},
+  {jp:'勉強する',r:'べんきょうする',cn:'学习',l:'N5',tags:['する动词'],ex:{jp:'毎日一時間は日本語を勉強しています。',r:'まいにちいちじかんはにほんごをべんきょうしています。',cn:'每天学习日语至少一小时。',hl:'勉強して'}},
+  {jp:'覚える',r:'おぼえる',cn:'记住',l:'N4',tags:['る动词'],ex:{jp:'単語を覚えるには繰り返し練習が必要です。',r:'たんごをおぼえるにはくりかえしれんしゅうがひつようです。',cn:'记单词需要反复练习。',hl:'覚える'}},
+  {jp:'忘れる',r:'わすれる',cn:'忘记',l:'N4',tags:['る动词'],ex:{jp:'大切な約束を忘れてしまいました。',r:'たいせつなやくそくをわすれてしまいました。',cn:'忘记了重要的约定。',hl:'忘れて'}},
+  {jp:'教える',r:'おしえる',cn:'教/告诉',l:'N4',tags:['る动词'],ex:{jp:'道を教えてもらえませんか？',r:'みちをおしえてもらえませんか？',cn:'能告诉我路怎么走吗？',hl:'教えて'}},
+  {jp:'待つ',r:'まつ',cn:'等待',l:'N5',tags:['う动词'],ex:{jp:'電車を20分も待ちました。',r:'でんしゃをにじっぷんもまちました。',cn:'等了电车整整20分钟。',hl:'待ちました'}},
+  {jp:'使う',r:'つかう',cn:'使用',l:'N4',tags:['う动词'],ex:{jp:'スマホをうまく使えば学習も捗ります。',r:'すまほをうまくつかえばがくしゅうもはかどります。',cn:'善用手机的话，学习也会有进展。',hl:'使えば'}},
+  {jp:'旅行する',r:'りょこうする',cn:'旅行',l:'N4',tags:['する动词'],ex:{jp:'来年は日本を旅行したいと思っています。',r:'らいねんはにほんをりょこうしたいとおもっています。',cn:'我在想明年去日本旅行。',hl:'旅行したい'}},
+],
+'时间':[
+  {jp:'今日',r:'きょう',cn:'今天',l:'N5',ex:{jp:'今日は特に予定がありません。',r:'きょうはとくによていがありません。',cn:'今天没有特别的安排。',hl:'今日'}},
+  {jp:'明日',r:'あした',cn:'明天',l:'N5',ex:{jp:'明日早起きしなければなりません。',r:'あしたはやおきしなければなりません。',cn:'明天必须早起。',hl:'明日'}},
+  {jp:'昨日',r:'きのう',cn:'昨天',l:'N5',ex:{jp:'昨日は残業で帰りが遅くなりました。',r:'きのうはざんぎょうでかえりがおそくなりました。',cn:'昨天因为加班回来很晚。',hl:'昨日'}},
+  {jp:'毎日',r:'まいにち',cn:'每天',l:'N5',ex:{jp:'毎日少しずつ練習すれば上達します。',r:'まいにちすこしずつれんしゅうすればじょうたつします。',cn:'每天稍微练习一下的话就会进步。',hl:'毎日'}},
+  {jp:'来週',r:'らいしゅう',cn:'下周',l:'N4',ex:{jp:'来週の月曜日に会議があります。',r:'らいしゅうのげつようびにかいぎがあります。',cn:'下周一有会议。',hl:'来週'}},
+  {jp:'先週',r:'せんしゅう',cn:'上周',l:'N4',ex:{jp:'先週末は友達と旅行に行きました。',r:'せんしゅうまつはともだちとりょこうにいきました。',cn:'上周末和朋友去旅行了。',hl:'先週'}},
+  {jp:'今年',r:'ことし',cn:'今年',l:'N5',ex:{jp:'今年の目標はN3に合格することです。',r:'ことしのもくひょうはN3にごうかくすることです。',cn:'今年的目标是通过N3考试。',hl:'今年'}},
+  {jp:'来年',r:'らいねん',cn:'明年',l:'N4',ex:{jp:'来年には日本へ留学する予定です。',r:'らいねんにはにほんへりゅうがくするよていです。',cn:'明年预定去日本留学。',hl:'来年'}},
+  {jp:'朝',r:'あさ',cn:'早上',l:'N5',ex:{jp:'朝はいつも忙しくて朝食を抜いてしまいます。',r:'あさはいつもいそがしくてちょうしょくをぬいてしまいます。',cn:'早上总是很忙，不得不不吃早饭。',hl:'朝'}},
+  {jp:'夜',r:'よる',cn:'晚上',l:'N5',ex:{jp:'夜遅くまでスマホを見るのはよくないです。',r:'よるおそくまでずまほをみるのはよくないです。',cn:'深夜一直看手机不好。',hl:'夜'}},
+],
+'地点':[
+  {jp:'駅',r:'えき',cn:'车站',l:'N5',ex:{jp:'駅の改札口で待ち合わせましょう。',r:'えきのかいさつぐちでまちあわせましょう。',cn:'在车站检票口集合吧。',hl:'駅'}},
+  {jp:'病院',r:'びょういん',cn:'医院',l:'N5',ex:{jp:'熱が38度もあるので病院に行きます。',r:'ねつがさんじゅうはちどもあるのでびょういんにいきます。',cn:'发烧38度，所以去医院。',hl:'病院'}},
+  {jp:'コンビニ',r:'こんびに',cn:'便利店',l:'N5',tags:['外来语'],ex:{jp:'コンビニは24時間いつでも利用できます。',r:'こんびにはにじゅうよじかんいつでもりようできます。',cn:'便利店24小时随时可以利用。',hl:'コンビニ'}},
+  {jp:'図書館',r:'としょかん',cn:'图书馆',l:'N4',ex:{jp:'図書館で静かに集中して勉強できます。',r:'としょかんでしずかにしゅうちゅうしてべんきょうできます。',cn:'在图书馆可以安静地专心学习。',hl:'図書館'}},
+  {jp:'空港',r:'くうこう',cn:'机场',l:'N4',ex:{jp:'羽田空港まで電車で40分かかります。',r:'はねだくうこうまででんしゃでよんじっぷんかかります。',cn:'去羽田机场坐电车要40分钟。',hl:'空港'}},
+  {jp:'温泉',r:'おんせん',cn:'温泉',l:'N4',ex:{jp:'日本の温泉は外から見える絶景が多いです。',r:'にほんのおんせんはそとからみえるぜっけいがおおいです。',cn:'日本的温泉很多都有绝美的风景。',hl:'温泉'}},
+  {jp:'公園',r:'こうえん',cn:'公园',l:'N4',ex:{jp:'週末は公園でジョギングをするのが好きです。',r:'しゅうまつはこうえんでじょぎんぐをするのがすきです。',cn:'周末喜欢在公园慢跑。',hl:'公園'}},
+  {jp:'銀行',r:'ぎんこう',cn:'银行',l:'N4',ex:{jp:'銀行で口座を開設したいのですが。',r:'ぎんこうでこうざをかいせつしたいのですが。',cn:'我想在银行开设账户。',hl:'銀行'}},
+  {jp:'神社',r:'じんじゃ',cn:'神社',l:'N4',ex:{jp:'正月には地元の神社に初詣に行きます。',r:'しょうがつにはじもとのじんじゃにはつもうでにいきます。',cn:'新年去当地神社参拜。',hl:'神社'}},
+],
+'形容词':[
+  {jp:'大きい',r:'おおきい',cn:'大的',l:'N5',tags:['い形'],ex:{jp:'大きいサイズのコーヒーをください。',r:'おおきいさいずのこーひーをください。',cn:'请给我大杯咖啡。',hl:'大きい'}},
+  {jp:'小さい',r:'ちいさい',cn:'小的',l:'N5',tags:['い形'],ex:{jp:'この部屋は少し小さいけど、居心地がいいです。',r:'このへやはすこしちいさいけど、いごこちがいいです。',cn:'这个房间虽然有点小，但住起来很舒适。',hl:'小さい'}},
+  {jp:'高い',r:'たかい',cn:'贵/高',l:'N5',tags:['い形'],ex:{jp:'東京は家賃が高くて大変です。',r:'とうきょうはやちんがたかくてたいへんです。',cn:'东京房租贵，很辛苦。',hl:'高くて'}},
+  {jp:'安い',r:'やすい',cn:'便宜',l:'N5',tags:['い形'],ex:{jp:'このお店は安くておいしいので人気です。',r:'このおみせはやすくておいしいのでにんきです。',cn:'这家店又便宜又好吃，很受欢迎。',hl:'安くて'}},
+  {jp:'難しい',r:'むずかしい',cn:'难',l:'N5',tags:['い形'],ex:{jp:'日本語の敬語はとても難しいです。',r:'にほんごのけいごはとてもむずかしいです。',cn:'日语的敬语非常难。',hl:'難しい'}},
+  {jp:'面白い',r:'おもしろい',cn:'有趣',l:'N4',tags:['い形'],ex:{jp:'この小説はとても面白くて一気に読みました。',r:'このしょうせつはとてもおもしろくていっきによみました。',cn:'这部小说非常有趣，一口气读完了。',hl:'面白くて'}},
+  {jp:'忙しい',r:'いそがしい',cn:'忙',l:'N4',tags:['い形'],ex:{jp:'最近仕事が忙しくて休む時間がありません。',r:'さいきんしごとがいそがしくてやすむじかんがありません。',cn:'最近工作很忙，没有休息的时间。',hl:'忙しくて'}},
+  {jp:'嬉しい',r:'うれしい',cn:'高兴',l:'N4',tags:['い形'],ex:{jp:'合格できて本当に嬉しいです！',r:'ごうかくできてほんとうにうれしいです！',cn:'通过了真的很高兴！',hl:'嬉しい'}},
+  {jp:'悲しい',r:'かなしい',cn:'悲伤',l:'N4',tags:['い形'],ex:{jp:'大切なペットが死んで悲しいです。',r:'たいせつなぺっとがしんでかなしいです。',cn:'重要的宠物去世了，很悲伤。',hl:'悲しい'}},
+  {jp:'便利',r:'べんり',cn:'方便',l:'N4',tags:['な形'],ex:{jp:'スマホがあれば何でも便利になりますね。',r:'すまほがあればなんでもべんりになりますね。',cn:'有了手机什么都变方便了呢。',hl:'便利'}},
+  {jp:'親切',r:'しんせつ',cn:'亲切',l:'N4',tags:['な形'],ex:{jp:'日本人はとても親切だと思います。',r:'にほんじんはとてもしんせつだとおもいます。',cn:'我觉得日本人非常亲切。',hl:'親切'}},
+],
+'交通':[
+  {jp:'電車',r:'でんしゃ',cn:'电车',l:'N5',ex:{jp:'東京では電車が一番便利な交通手段です。',r:'とうきょうではでんしゃがいちばんべんりなこうつうしゅだんです。',cn:'在东京，电车是最方便的交通方式。',hl:'電車'}},
+  {jp:'新幹線',r:'しんかんせん',cn:'新干线',l:'N4',ex:{jp:'新幹線で東京から大阪まで2時間半です。',r:'しんかんせんでとうきょうからおおさかまでにじかんはんです。',cn:'坐新干线从东京到大阪要两个半小时。',hl:'新幹線'}},
+  {jp:'地下鉄',r:'ちかてつ',cn:'地铁',l:'N4',ex:{jp:'地下鉄の乗り換えは複雑でいつも迷います。',r:'ちかてつののりかえはふくざつでいつもまよいます。',cn:'地铁换乘很复杂，我总是迷路。',hl:'地下鉄'}},
+  {jp:'タクシー',r:'たくしー',cn:'出租车',l:'N5',tags:['外来语'],ex:{jp:'タクシーで空港まで行くといくらかかりますか？',r:'たくしーでくうこうまでいくといくらかかりますか？',cn:'坐出租车去机场要多少钱？',hl:'タクシー'}},
+  {jp:'飛行機',r:'ひこうき',cn:'飞机',l:'N5',ex:{jp:'初めて飛行機に乗ったのは10歳の時でした。',r:'はじめてひこうきにのったのはじゅっさいのときでした。',cn:'第一次坐飞机是在10岁的时候。',hl:'飛行機'}},
+  {jp:'切符',r:'きっぷ',cn:'车票',l:'N5',ex:{jp:'自動券売機で切符を買いました。',r:'じどうけんばいきできっぷをかいました。',cn:'在自动售票机买了车票。',hl:'切符'}},
+],
+'N4进阶':[
+  {jp:'経験',r:'けいけん',cn:'经验/经历',l:'N4',ex:{jp:'海外での生活経験は貴重だと思います。',r:'かいがいでのせいかつけいけんはきちょうだとおもいます。',cn:'我认为海外生活经历很宝贵。',hl:'経験'}},
+  {jp:'計画',r:'けいかく',cn:'计划',l:'N4',ex:{jp:'旅行の計画をしっかり立ててから出発します。',r:'りょこうのけいかくをしっかりたててからしゅっぱつします。',cn:'认真制定旅行计划后再出发。',hl:'計画'}},
+  {jp:'文化',r:'ぶんか',cn:'文化',l:'N4',ex:{jp:'異文化を理解するには語学力が重要です。',r:'いぶんかをりかいするにはごがくりょくがじゅうようです。',cn:'理解异国文化，语言能力很重要。',hl:'文化'}},
+  {jp:'連絡',r:'れんらく',cn:'联系',l:'N4',ex:{jp:'何かあったらすぐ連絡してください。',r:'なにかあったらすぐれんらくしてください。',cn:'有什么事请立刻联系我。',hl:'連絡'}},
+  {jp:'説明',r:'せつめい',cn:'说明/解释',l:'N4',ex:{jp:'もう少し詳しく説明していただけますか？',r:'もうすこしくわしくせつめいしていただけますか？',cn:'能再详细地说明一下吗？',hl:'説明'}},
+  {jp:'予約',r:'よやく',cn:'预约/预订',l:'N4',ex:{jp:'レストランの予約を3日前にしました。',r:'れすとらんのよやくをみっかまえにしました。',cn:'提前3天预约了餐厅。',hl:'予約'}},
+  {jp:'準備',r:'じゅんび',cn:'准备',l:'N4',ex:{jp:'試験の準備を早めに始めた方がいいです。',r:'しけんのじゅんびをはやめにはじめたほうがいいです。',cn:'考试的准备早点开始比较好。',hl:'準備'}},
+  {jp:'気持ち',r:'きもち',cn:'心情/感觉',l:'N4',ex:{jp:'あなたの気持ちはよく分かります。',r:'あなたのきもちはよくわかります。',cn:'我很理解你的心情。',hl:'気持ち'}},
+],
+'N3中级':[
+  {jp:'影響',r:'えいきょう',cn:'影响',l:'N3',ex:{jp:'SNSは若者の価値観に大きな影響を与えています。',r:'えすえぬえすはわかもののかちかんにおおきなえいきょうをあたえています。',cn:'社交媒体对年轻人的价值观产生了很大影响。',hl:'影響'}},
+  {jp:'可能性',r:'かのうせい',cn:'可能性',l:'N3',ex:{jp:'努力すれば成功する可能性は必ずあります。',r:'どりょくすればせいこうするかのうせいはかならずあります。',cn:'只要努力，就一定有成功的可能性。',hl:'可能性'}},
+  {jp:'状況',r:'じょうきょう',cn:'状况/情况',l:'N3',ex:{jp:'現在の状況を正確に把握することが重要です。',r:'げんざいのじょうきょうをせいかくにはあくすることがじゅうようです。',cn:'准确把握现在的状况很重要。',hl:'状況'}},
+  {jp:'判断',r:'はんだん',cn:'判断',l:'N3',ex:{jp:'情報を集めてから判断した方がいいですよ。',r:'じょうほうをあつめてからはんだんしたほうがいいですよ。',cn:'收集信息之后再判断比较好。',hl:'判断'}},
+  {jp:'必要',r:'ひつよう',cn:'必要/需要',l:'N3',ex:{jp:'ビザの申請には様々な書類が必要です。',r:'びざのしんせいにはさまざまなしょるいがひつようです。',cn:'申请签证需要各种各样的文件。',hl:'必要'}},
+]
+};
+
+
+// EXTRA VOCABULARY - adds to make total 400+
+const VDB_EXTRA = {
+'身体与健康':[
+  {jp:'頭',r:'あたま',cn:'头',l:'N5',ex:{jp:'頭が痛いので休みます。',r:'あたまがいたいのでやすみます。',cn:'头痛所以休息。',hl:'頭'}},
+  {jp:'目',r:'め',cn:'眼睛',l:'N5',ex:{jp:'目が疲れたらストレッチをしましょう。',r:'めがつかれたらすとれっちをしましょう。',cn:'眼睛累了就做做伸展运动吧。',hl:'目'}},
+  {jp:'耳',r:'みみ',cn:'耳朵',l:'N5',ex:{jp:'耳が痛いので病院に行きます。',r:'みみがいたいのでびょういんにいきます。',cn:'耳朵痛所以去医院。',hl:'耳'}},
+  {jp:'口',r:'くち',cn:'嘴',l:'N5',ex:{jp:'口を大きく開けてください。',r:'くちをおおきくあけてください。',cn:'请把嘴巴张大。',hl:'口'}},
+  {jp:'手',r:'て',cn:'手',l:'N5',ex:{jp:'手を洗ってから食べましょう。',r:'てをあらってからたべましょう。',cn:'洗手后再吃吧。',hl:'手'}},
+  {jp:'足',r:'あし',cn:'脚',l:'N5',ex:{jp:'足が痛くて歩けません。',r:'あしがいたくてあるけません。',cn:'脚痛走不了路。',hl:'足'}},
+  {jp:'お腹',r:'おなか',cn:'肚子',l:'N5',ex:{jp:'お腹が空いたので何か食べたいです。',r:'おなかがすいたのでなにかたべたいです。',cn:'肚子饿了想吃点东西。',hl:'お腹'}},
+  {jp:'熱',r:'ねつ',cn:'发烧/热度',l:'N4',ex:{jp:'熱が38度もあります。',r:'ねつがさんじゅうはちどもあります。',cn:'发烧38度了。',hl:'熱'}},
+  {jp:'薬',r:'くすり',cn:'药',l:'N4',ex:{jp:'食後に薬を飲んでください。',r:'しょくごにくすりをのんでください。',cn:'请饭后吃药。',hl:'薬'}},
+  {jp:'病気',r:'びょうき',cn:'生病',l:'N4',ex:{jp:'病気の時は無理しないでください。',r:'びょうきのときはむりしないでください。',cn:'生病的时候不要勉强。',hl:'病気'}},
+  {jp:'体',r:'からだ',cn:'身体',l:'N5',ex:{jp:'体に気をつけてください。',r:'からだにきをつけてください。',cn:'请保重身体。',hl:'体'}},
+  {jp:'元気',r:'げんき',cn:'精神好/健康',l:'N5',ex:{jp:'最近元気がありません。',r:'さいきんげんきがありません。',cn:'最近没有精神。',hl:'元気'}},
+],
+'学校与工作':[
+  {jp:'学生',r:'がくせい',cn:'学生',l:'N5',ex:{jp:'私は大学生です。',r:'わたしはだいがくせいです。',cn:'我是大学生。',hl:'学生'}},
+  {jp:'先生',r:'せんせい',cn:'老师',l:'N5',ex:{jp:'田中先生はとても親切です。',r:'たなかせんせいはとてもしんせつです。',cn:'田中老师非常亲切。',hl:'先生'}},
+  {jp:'授業',r:'じゅぎょう',cn:'课程',l:'N4',ex:{jp:'今日の授業はとても面白かったです。',r:'きょうのじゅぎょうはとてもおもしろかったです。',cn:'今天的课非常有趣。',hl:'授業'}},
+  {jp:'宿題',r:'しゅくだい',cn:'作业',l:'N4',ex:{jp:'宿題を忘れてしまいました。',r:'しゅくだいをわすれてしまいました。',cn:'忘带作业了。',hl:'宿題'}},
+  {jp:'試験',r:'しけん',cn:'考试',l:'N4',ex:{jp:'来週試験があるので毎日勉強しています。',r:'らいしゅうしけんがあるのでまいにちべんきょうしています。',cn:'下周有考试所以每天学习。',hl:'試験'}},
+  {jp:'会社',r:'かいしゃ',cn:'公司',l:'N4',ex:{jp:'会社に8時に出勤します。',r:'かいしゃにはちじにしゅっきんします。',cn:'8点到公司上班。',hl:'会社'}},
+  {jp:'仕事',r:'しごと',cn:'工作',l:'N4',ex:{jp:'今の仕事はやりがいがあります。',r:'いまのしごとはやりがいがあります。',cn:'现在的工作很有意义。',hl:'仕事'}},
+  {jp:'会議',r:'かいぎ',cn:'会议',l:'N4',ex:{jp:'午後2時から会議があります。',r:'ごごにじからかいぎがあります。',cn:'下午2点开始有会议。',hl:'会議'}},
+  {jp:'メール',r:'めーる',cn:'邮件',l:'N4',ex:{jp:'後でメールを送ります。',r:'あとでめーるをおくります。',cn:'之后发邮件给你。',hl:'メール'}},
+  {jp:'締め切り',r:'しめきり',cn:'截止日期',l:'N3',ex:{jp:'締め切りは明日です。急いでください。',r:'しめきりはあしたです。いそいでください。',cn:'截止日期是明天，请快点。',hl:'締め切り'}},
+  {jp:'残業',r:'ざんぎょう',cn:'加班',l:'N3',ex:{jp:'今週は毎日残業しています。',r:'こんしゅうはまいにちざんぎょうしています。',cn:'这周每天都在加班。',hl:'残業'}},
+  {jp:'給料',r:'きゅうりょう',cn:'工资',l:'N3',ex:{jp:'来月から給料が上がります。',r:'らいげつからきゅうりょうがあがります。',cn:'从下个月起工资涨了。',hl:'給料'}},
+],
+'家与生活':[
+  {jp:'家',r:'いえ',cn:'家/房子',l:'N5',ex:{jp:'家に帰ったらすぐ手を洗います。',r:'いえにかえったらすぐてをあらいます。',cn:'回家后马上洗手。',hl:'家'}},
+  {jp:'部屋',r:'へや',cn:'房间',l:'N5',ex:{jp:'部屋が散らかっているので掃除します。',r:'へやがちらかっているのでそうじします。',cn:'房间乱了所以打扫。',hl:'部屋'}},
+  {jp:'風呂',r:'ふろ',cn:'浴缸/洗澡',l:'N4',ex:{jp:'毎晩お風呂に入ります。',r:'まいばんおふろにはいります。',cn:'每晚洗澡。',hl:'風呂'}},
+  {jp:'掃除',r:'そうじ',cn:'打扫',l:'N4',ex:{jp:'週末に部屋の掃除をします。',r:'しゅうまつにへやのそうじをします。',cn:'周末打扫房间。',hl:'掃除'}},
+  {jp:'洗濯',r:'せんたく',cn:'洗衣服',l:'N4',ex:{jp:'雨の日は洗濯ができません。',r:'あめのひはせんたくができません。',cn:'下雨天不能洗衣服。',hl:'洗濯'}},
+  {jp:'料理',r:'りょうり',cn:'料理/做饭',l:'N4',ex:{jp:'日本料理を作るのが好きです。',r:'にほんりょうりをつくるのがすきです。',cn:'喜欢做日本料理。',hl:'料理'}},
+  {jp:'電気',r:'でんき',cn:'电/电灯',l:'N5',ex:{jp:'出かける前に電気を消してください。',r:'でかけるまえにでんきをけしてください。',cn:'出门前请关灯。',hl:'電気'}},
+  {jp:'エアコン',r:'えあこん',cn:'空调',l:'N4',ex:{jp:'夏はエアコンなしでは眠れません。',r:'なつはえあこんなしではねむれません。',cn:'夏天没有空调睡不着。',hl:'エアコン'}},
+  {jp:'冷蔵庫',r:'れいぞうこ',cn:'冰箱',l:'N4',ex:{jp:'冷蔵庫に牛乳がまだあります。',r:'れいぞうこにぎゅうにゅうがまだあります。',cn:'冰箱里还有牛奶。',hl:'冷蔵庫'}},
+  {jp:'家賃',r:'やちん',cn:'房租',l:'N3',ex:{jp:'東京の家賃はとても高いです。',r:'とうきょうのやちんはとてもたかいです。',cn:'东京的房租非常贵。',hl:'家賃'}},
+],
+'天气与自然':[
+  {jp:'天気',r:'てんき',cn:'天气',l:'N5',ex:{jp:'今日はいい天気ですね。',r:'きょうはいいてんきですね。',cn:'今天天气真好啊。',hl:'天気'}},
+  {jp:'雨',r:'あめ',cn:'雨',l:'N5',ex:{jp:'明日は雨が降るそうです。',r:'あしたはあめがふるそうです。',cn:'听说明天会下雨。',hl:'雨'}},
+  {jp:'雪',r:'ゆき',cn:'雪',l:'N5',ex:{jp:'初めて雪を見て感動しました。',r:'はじめてゆきをみてかんどうしました。',cn:'第一次看到雪感动了。',hl:'雪'}},
+  {jp:'風',r:'かぜ',cn:'风',l:'N5',ex:{jp:'今日は風が強いですね。',r:'きょうはかぜがつよいですね。',cn:'今天风很大啊。',hl:'風'}},
+  {jp:'晴れ',r:'はれ',cn:'晴天',l:'N5',ex:{jp:'明日は晴れるといいですね。',r:'あしたははれるといいですね。',cn:'明天如果是晴天就好了。',hl:'晴れ'}},
+  {jp:'曇り',r:'くもり',cn:'阴天',l:'N4',ex:{jp:'今日は一日中曇りでした。',r:'きょうはいちにちじゅうくもりでした。',cn:'今天一整天都是阴天。',hl:'曇り'}},
+  {jp:'台風',r:'たいふう',cn:'台风',l:'N4',ex:{jp:'台風が来るので気をつけてください。',r:'たいふうがくるのできをつけてください。',cn:'台风要来了，请注意。',hl:'台風'}},
+  {jp:'季節',r:'きせつ',cn:'季节',l:'N4',ex:{jp:'日本には四つの季節があります。',r:'にほんにはよっつのきせつがあります。',cn:'日本有四个季节。',hl:'季節'}},
+  {jp:'桜',r:'さくら',cn:'樱花',l:'N4',ex:{jp:'春になると桜がきれいに咲きます。',r:'はるになるとさくらがきれいにさきます。',cn:'春天一到樱花开得很美。',hl:'桜'}},
+  {jp:'海',r:'うみ',cn:'大海',l:'N5',ex:{jp:'夏は海に泳ぎに行きたいです。',r:'なつはうみにおよぎにいきたいです。',cn:'夏天想去海里游泳。',hl:'海'}},
+  {jp:'山',r:'やま',cn:'山',l:'N5',ex:{jp:'富士山は日本一高い山です。',r:'ふじさんはにほんいちたかいやまです。',cn:'富士山是日本最高的山。',hl:'山'}},
+  {jp:'温度',r:'おんど',cn:'温度',l:'N4',ex:{jp:'今日の最高温度は35度です。',r:'きょうのさいこうおんどはさんじゅうごどです。',cn:'今天最高温度是35度。',hl:'温度'}},
+],
+'购物与金钱':[
+  {jp:'値段',r:'ねだん',cn:'价格',l:'N4',ex:{jp:'この値段は高いと思います。',r:'このねだんはたかいとおもいます。',cn:'我觉得这个价格太贵了。',hl:'値段'}},
+  {jp:'お金',r:'おかね',cn:'钱',l:'N5',ex:{jp:'お金を大切に使いましょう。',r:'おかねをたいせつにつかいましょう。',cn:'要珍惜金钱。',hl:'お金'}},
+  {jp:'財布',r:'さいふ',cn:'钱包',l:'N4',ex:{jp:'財布をどこかに忘れてしまいました。',r:'さいふをどこかにわすれてしまいました。',cn:'把钱包忘在哪里了。',hl:'財布'}},
+  {jp:'クレジットカード',r:'くれじっとかーど',cn:'信用卡',l:'N4',ex:{jp:'クレジットカードは使えますか？',r:'くれじっとかーどはつかえますか？',cn:'可以用信用卡吗？',hl:'クレジットカード'}},
+  {jp:'割引',r:'わりびき',cn:'折扣',l:'N3',ex:{jp:'今日は20%割引のセールです。',r:'きょうはにじゅっぱーせんとわりびきのせーるです。',cn:'今天是打八折的大甩卖。',hl:'割引'}},
+  {jp:'レシート',r:'れしーと',cn:'收据',l:'N4',ex:{jp:'レシートをなくしてしまいました。',r:'れしーとをなくしてしまいました。',cn:'把收据弄丢了。',hl:'レシート'}},
+  {jp:'両替',r:'りょうがえ',cn:'换钱',l:'N3',ex:{jp:'円をドルに両替したいのですが。',r:'えんをどるにりょうがえしたいのですが。',cn:'我想把日元换成美元。',hl:'両替'}},
+  {jp:'貯金',r:'ちょきん',cn:'储蓄',l:'N3',ex:{jp:'毎月少しずつ貯金しています。',r:'まいつきすこしずつちょきんしています。',cn:'每月存一点钱。',hl:'貯金'}},
+  {jp:'消費税',r:'しょうひぜい',cn:'消费税',l:'N3',ex:{jp:'日本の消費税は10%です。',r:'にほんのしょうひぜいはじゅっぱーせんとです。',cn:'日本的消费税是10%。',hl:'消費税'}},
+  {jp:'お釣り',r:'おつり',cn:'找零',l:'N4',ex:{jp:'お釣りは200円です。',r:'おつりはにひゃくえんです。',cn:'找您200日元。',hl:'お釣り'}},
+],
+'娱乐与爱好':[
+  {jp:'映画',r:'えいが',cn:'电影',l:'N5',ex:{jp:'週末に映画を見に行きませんか？',r:'しゅうまつにえいがをみにいきませんか？',cn:'周末要不要去看电影？',hl:'映画'}},
+  {jp:'音楽',r:'おんがく',cn:'音乐',l:'N5',ex:{jp:'通勤中に音楽を聴いています。',r:'つうきんちゅうにおんがくをきいています。',cn:'上班途中听音乐。',hl:'音楽'}},
+  {jp:'スポーツ',r:'すぽーつ',cn:'运动/体育',l:'N5',ex:{jp:'スポーツをすることが大好きです。',r:'すぽーつをすることがだいすきです。',cn:'非常喜欢运动。',hl:'スポーツ'}},
+  {jp:'旅行',r:'りょこう',cn:'旅行',l:'N4',ex:{jp:'来月は京都へ旅行する予定です。',r:'らいげつはきょうとへりょこうするよていです。',cn:'下个月预计去京都旅行。',hl:'旅行'}},
+  {jp:'写真',r:'しゃしん',cn:'照片',l:'N5',ex:{jp:'この場所で写真を撮っていいですか？',r:'このばしょでしゃしんをとっていいですか？',cn:'在这个地方可以拍照吗？',hl:'写真'}},
+  {jp:'ゲーム',r:'げーむ',cn:'游戏',l:'N5',ex:{jp:'最近新しいゲームにはまっています。',r:'さいきんあたらしいげーむにはまっています。',cn:'最近迷上了新游戏。',hl:'ゲーム'}},
+  {jp:'本',r:'ほん',cn:'书',l:'N5',ex:{jp:'図書館で本を借りました。',r:'としょかんでほんをかりました。',cn:'在图书馆借了书。',hl:'本'}},
+  {jp:'料理',r:'りょうり',cn:'烹饪/料理',l:'N4',ex:{jp:'料理を作るのが趣味です。',r:'りょうりをつくるのがしゅみです。',cn:'做料理是我的爱好。',hl:'料理'}},
+  {jp:'散歩',r:'さんぽ',cn:'散步',l:'N4',ex:{jp:'夕方に犬と散歩します。',r:'ゆうがたにいぬとさんぽします。',cn:'傍晚和狗狗散步。',hl:'散歩'}},
+  {jp:'カラオケ',r:'からおけ',cn:'卡拉OK',l:'N4',ex:{jp:'カラオケで日本語の歌を歌いました。',r:'からおけでにほんごのうたをうたいました。',cn:'在卡拉OK唱了日语歌。',hl:'カラオケ'}},
+  {jp:'趣味',r:'しゅみ',cn:'兴趣爱好',l:'N4',ex:{jp:'趣味は何ですか？',r:'しゅみはなんですか？',cn:'您的爱好是什么？',hl:'趣味'}},
+  {jp:'コンサート',r:'こんさーと',cn:'演唱会/音乐会',l:'N4',ex:{jp:'好きなアーティストのコンサートに行きました。',r:'すきなあーてぃすとのこんさーとにいきました。',cn:'去了喜欢的艺人的演唱会。',hl:'コンサート'}},
+],
+'N4核心词':[
+  {jp:'確認',r:'かくにん',cn:'确认',l:'N4',ex:{jp:'予約内容を確認してください。',r:'よやくないようをかくにんしてください。',cn:'请确认预约内容。',hl:'確認'}},
+  {jp:'案内',r:'あんない',cn:'引导/介绍',l:'N4',ex:{jp:'係員が案内してくれました。',r:'かかりいんがあんないしてくれました。',cn:'工作人员为我引导。',hl:'案内'}},
+  {jp:'注意',r:'ちゅうい',cn:'注意',l:'N4',ex:{jp:'足元に注意してください。',r:'あしもとにちゅういしてください。',cn:'请注意脚下。',hl:'注意'}},
+  {jp:'心配',r:'しんぱい',cn:'担心',l:'N4',ex:{jp:'心配しないでください、大丈夫です。',r:'しんぱいしないでください、だいじょうぶです。',cn:'请不要担心，没问题的。',hl:'心配'}},
+  {jp:'集合',r:'しゅうごう',cn:'集合/集中',l:'N4',ex:{jp:'10時に入口で集合してください。',r:'じゅうじにいりぐちでしゅうごうしてください。',cn:'请10点在入口集合。',hl:'集合'}},
+  {jp:'参加',r:'さんか',cn:'参加',l:'N4',ex:{jp:'イベントに参加したいです。',r:'いべんとにさんかしたいです。',cn:'想参加活动。',hl:'参加'}},
+  {jp:'変更',r:'へんこう',cn:'变更/更改',l:'N4',ex:{jp:'予約を変更したいのですが。',r:'よやくをへんこうしたいのですが。',cn:'我想更改预约。',hl:'変更'}},
+  {jp:'取消',r:'とりけし',cn:'取消',l:'N4',ex:{jp:'予約を取消したいです。',r:'よやくをとりけしたいです。',cn:'我想取消预约。',hl:'取消'}},
+  {jp:'申請',r:'しんせい',cn:'申请',l:'N4',ex:{jp:'ビザの申請には時間がかかります。',r:'びざのしんせいにはじかんがかかります。',cn:'申请签证需要时间。',hl:'申請'}},
+  {jp:'手続き',r:'てつづき',cn:'手续',l:'N4',ex:{jp:'入学の手続きをしています。',r:'にゅうがくのてつづきをしています。',cn:'正在办理入学手续。',hl:'手続き'}},
+  {jp:'理解',r:'りかい',cn:'理解',l:'N4',ex:{jp:'あなたの気持ちはよく理解できます。',r:'あなたのきもちはよくりかいできます。',cn:'我很能理解你的心情。',hl:'理解'}},
+  {jp:'相談',r:'そうだん',cn:'商量/咨询',l:'N4',ex:{jp:'困ったことがあれば相談してください。',r:'こまったことがあればそうだんしてください。',cn:'有困难的话请来商量。',hl:'相談'}},
+],
+'N3进阶词':[
+  {jp:'効果',r:'こうか',cn:'效果',l:'N3',ex:{jp:'この薬は効果がありますか？',r:'このくすりはこうかがありますか？',cn:'这个药有效果吗？',hl:'効果'}},
+  {jp:'原因',r:'げんいん',cn:'原因',l:'N3',ex:{jp:'事故の原因を調査しています。',r:'じこのげんいんをちょうさしています。',cn:'正在调查事故原因。',hl:'原因'}},
+  {jp:'結果',r:'けっか',cn:'结果',l:'N3',ex:{jp:'試験の結果はどうでしたか？',r:'しけんのけっかはどうでしたか？',cn:'考试结果如何？',hl:'結果'}},
+  {jp:'目的',r:'もくてき',cn:'目的',l:'N3',ex:{jp:'この旅行の目的は何ですか？',r:'このりょこうのもくてきはなんですか？',cn:'这次旅行的目的是什么？',hl:'目的'}},
+  {jp:'印象',r:'いんしょう',cn:'印象',l:'N3',ex:{jp:'日本の第一印象はどうでしたか？',r:'にほんのだいいちいんしょうはどうでしたか？',cn:'对日本的第一印象如何？',hl:'印象'}},
+  {jp:'期待',r:'きたい',cn:'期待/期望',l:'N3',ex:{jp:'新しいプロジェクトに期待しています。',r:'あたらしいぷろじぇくとにきたいしています。',cn:'对新项目抱有期待。',hl:'期待'}},
+  {jp:'機会',r:'きかい',cn:'机会',l:'N3',ex:{jp:'日本語を使う機会を増やしたいです。',r:'にほんごをつかうきかいをふやしたいです。',cn:'想增加使用日语的机会。',hl:'機会'}},
+  {jp:'表現',r:'ひょうげん',cn:'表达/表现',l:'N3',ex:{jp:'日本語の表現はとても豊かです。',r:'にほんごのひょうげんはとてもゆたかです。',cn:'日语的表达方式非常丰富。',hl:'表現'}},
+  {jp:'習慣',r:'しゅうかん',cn:'习惯',l:'N3',ex:{jp:'毎朝ジョギングする習慣があります。',r:'まいあさじょぎんぐするしゅうかんがあります。',cn:'有每天早上慢跑的习惯。',hl:'習慣'}},
+  {jp:'関係',r:'かんけい',cn:'关系',l:'N3',ex:{jp:'二人の関係はどんな感じですか？',r:'ふたりのかんけいはどんなかんじですか？',cn:'两个人的关系是什么感觉？',hl:'関係'}},
+],
+};
+// Merge extra vocab into VDB
+Object.entries(VDB_EXTRA).forEach(([cat, words]) => {
+  if (!VDB[cat]) VDB[cat] = [];
+  VDB[cat].push(...words);
+});
+
+// ═══ GRAMMAR DATABASE ═══
+const GDB = [
+ {l:'N5',n:1,title:'～は～です',key:'基本判断句',desc:'日语最基础句型。主语+は+名词/形容词+です。否定：ではありません。疑问：ですか。',jp:'わたしは <span class="gc-hl">がくせい</span>です。',rd:'わたしは がくせい です。',cn:'我是学生。'},
+ {l:'N5',n:2,title:'～があります／います',key:'存在句',desc:'物品/事物存在用あります，生物/人用います。位置用「場所+に+あります/います」表示。',jp:'テーブルの上に <span class="gc-hl">ほんがあります</span>。',rd:'テーブルのうえに ほんがあります。',cn:'桌子上有书。'},
+ {l:'N5',n:3,title:'～てください',key:'礼貌请求',desc:'动词て形+ください，礼貌请求"请做……"。否定：～ないでください（请不要……）。',jp:'ここに <span class="gc-hl">書いてください</span>。',rd:'ここに かいてください。',cn:'请在这里写。'},
+ {l:'N5',n:4,title:'～たいです',key:'表达愿望',desc:'动词连用形+たいです，表示主观愿望"我想……"。第三人称：たがっています。',jp:'日本語を <span class="gc-hl">上手になりたい</span>です。',rd:'にほんごを じょうずになりたいです。',cn:'我想把日语学好。'},
+ {l:'N5',n:5,title:'～てもいいですか',key:'请求许可',desc:'动词て形+もいいですか，询问对方是否允许"可以……吗"。回答：いいですよ/だめです。',jp:'写真を <span class="gc-hl">撮ってもいいですか</span>？',rd:'しゃしんを とってもいいですか？',cn:'可以拍照吗？'},
+ {l:'N5',n:6,title:'形容词て形连用',key:'形容词并列',desc:'い形去い加くて；な形去な加で。可连接多个形容词，表示"既……又……"。',jp:'このお店は <span class="gc-hl">安くておいしい</span>です。',rd:'このおみせは やすくておいしいです。',cn:'这家店又便宜又好吃。'},
+ {l:'N5',n:7,title:'～に行きます',key:'移动表达',desc:'に表示目的地或目的（动词连用形+に+行く）。"去……(做……)"。',jp:'買い物 <span class="gc-hl">に</span> 行きます。',rd:'かいものに いきます。',cn:'去买东西。'},
+ {l:'N5',n:8,title:'～ませんか',key:'邀请表达',desc:'动词ます形去ます+ませんか，婉转邀请"要不要……？"。比ましょう更礼貌。',jp:'一緒に食事 <span class="gc-hl">しませんか</span>？',rd:'いっしょに しょくじしませんか？',cn:'要不要一起吃饭？'},
+ {l:'N4',n:9,title:'～たことがある',key:'曾经经历',desc:'动词た形+ことがある，强调"曾经有过这种经历"，是对过去经历的陈述。',jp:'富士山に <span class="gc-hl">登ったことがあります</span>。',rd:'ふじさんに のぼったことがあります。',cn:'我爬过富士山。'},
+ {l:'N4',n:10,title:'～ながら',key:'同时进行',desc:'动词连用形+ながら，同时进行两个动作，主要动作在后。前动作为伴随状态。',jp:'音楽を聴き <span class="gc-hl">ながら</span> 走ります。',rd:'おんがくをききながら はしります。',cn:'一边听音乐一边跑步。'},
+ {l:'N4',n:11,title:'～てしまう',key:'完成/遗憾',desc:'动词て形+しまう，完成某动作，有时含遗憾或无法控制的语气。口语：ちゃう/じゃう。',jp:'財布を <span class="gc-hl">忘れてしまいました</span>。',rd:'さいふを わすれてしまいました。',cn:'不小心忘带钱包了。'},
+ {l:'N4',n:12,title:'～ようになる',key:'变化过程',desc:'表示状态/能力的变化，"渐渐变得能……"，强调从不能到能的过程，常描述进步。',jp:'最近日本語が <span class="gc-hl">話せるようになりました</span>。',rd:'さいきん にほんごが はなせるようになりました。',cn:'最近日语能说了（进步了）。'},
+ {l:'N4',n:13,title:'授受动词三兄弟',key:'あげる/もらう/くれる',desc:'あげる：我给别人；もらう：我从别人处得到；くれる：别人给我/我方。方向很重要。',jp:'友達に本を <span class="gc-hl">貸してあげました</span>。',rd:'ともだちに ほんを かしてあげました。',cn:'把书借给了朋友。'},
+ {l:'N4',n:14,title:'～ておく',key:'事先准备',desc:'动词て形+おく，为将来某目的提前做好准备，"事先/预先做……"。',jp:'旅行前に調べ <span class="gc-hl">ておきます</span>。',rd:'りょこうまえに しらべておきます。',cn:'旅行前先查好。'},
+ {l:'N4',n:15,title:'～ば～のに',key:'假设+遗憾',desc:'假设前提+のに，表达"如果……就好了"，含现实并非如此的遗憾语气。',jp:'もっとお金が <span class="gc-hl">あれば</span> 旅行するのに。',rd:'もっとおかねが あれば りょこうするのに。',cn:'要是钱多一点就好了（可以去旅行）。'},
+ {l:'N3',n:16,title:'～にとって',key:'对于……来说',desc:'表示从某人/某立场来评价，"对于……来说"，后接评价表达。区别于対して（更客观）。',jp:'私 <span class="gc-hl">にとって</span> 日本語学習は楽しいです。',rd:'わたしにとって にほんごがくしゅうは たのしいです。',cn:'对我来说，学日语很快乐。'},
+ {l:'N3',n:17,title:'～わけではない',key:'部分否定',desc:'"并不是……"，部分否定，否定的是全称判断，而非完全否定。区别于全否定的ない。',jp:'全部 <span class="gc-hl">わかるわけではない</span>。',rd:'ぜんぶ わかるわけではない。',cn:'并不是全部都懂。'},
+ {l:'N3',n:18,title:'～ものの',key:'转折逆接',desc:'"虽然……但是……"，前项事实成立，但后项出乎意料或令人遗憾，语气偏正式书面。',jp:'合格した <span class="gc-hl">ものの</span>、自信がない。',rd:'ごうかくした ものの、じしんがない。',cn:'虽然合格了，但没有自信。'},
+ {l:'N3',n:19,title:'～に対して',key:'对象/对比',desc:'表示动作态度的对象"对……"，也可表并列对比。比にとって更客观，常用于书面。',jp:'子供 <span class="gc-hl">に対して</span> 優しく話します。',rd:'こどもに たいして やさしくはなします。',cn:'对孩子温柔地说话。'},
+ {l:'N3',n:20,title:'～ということ',key:'内容名词化',desc:'"……这件事/这个情况"，将一个完整的句子内容名词化，常用于间接引用或强调某事实。',jp:'明日休み <span class="gc-hl">ということ</span> は本当ですか？',rd:'あした やすみということは ほんとうですか？',cn:'明天休假这件事是真的吗？'},
+];
+// ═══ 18 DIALOG SCENES ═══
+const SCENES=[
+{id:'cafe',e:'☕',bg:'#1E1208',t:'咖啡厅点餐',sub:'在东京星巴克点单',lv:'N5',npc:'店员',steps:[
+  {w:'npc',jp:'いらっしゃいませ！ご注文はお決まりですか？',r:'いらっしゃいませ！ごちゅうもんはおきまりですか？',cn:'欢迎光临！请问您点好了吗？'},
+  {w:'c',opts:[{jp:'抹茶ラテをMサイズでください。',r:'まっちゃらてをMさいずでください。',cn:'请给我M号抹茶拿铁。',ok:1},{jp:'ありがとうございます。',r:'ありがとうございます。',cn:'谢谢。',ok:0},{jp:'どこですか？',r:'どこですか？',cn:'在哪里？',ok:0}]},
+  {w:'npc',jp:'かしこまりました。お名前をいただけますか？',r:'かしこまりました。おなまえをいただけますか？',cn:'好的，请问怎么称呼您？'},
+  {w:'v',p:'请用日语说出你的名字'},
+  {w:'npc',jp:'少々お待ちください！',r:'しょうしょうおまちください！',cn:'请稍候！'},
+  {w:'e'}
+]},
+{id:'station',e:'🚉',bg:'#080E1E',t:'车站问路',sub:'向路人问新宿站方向',lv:'N5',npc:'路人',steps:[
+  {w:'ys',jp:'すみません！新宿駅はどこですか？',r:'すみません！しんじゅくえきはどこですか？',cn:'不好意思！请问新宿站在哪里？'},
+  {w:'npc',jp:'あ、まっすぐ行って、信号を右に曲がってください。徒歩5分くらいですよ。',r:'まっすぐいって、しんごうをみぎにまがってください。',cn:'直走，在红绿灯右转，步行约5分钟。'},
+  {w:'c',opts:[{jp:'ありがとうございます！助かりました！',r:'ありがとうございます！たすかりました！',cn:'谢谢！帮了大忙！',ok:1},{jp:'もう一度お願いします。',r:'もういちどおねがいします。',cn:'请再说一次。',ok:1},{jp:'はじめまして。',r:'はじめまして。',cn:'初次见面。',ok:0}]},
+  {w:'npc',jp:'どういたしまして！お気をつけて！',r:'どういたしまして！おきをつけて！',cn:'不客气！请多保重！'},
+  {w:'e'}
+]},
+{id:'conbini',e:'🛍️',bg:'#081E0A',t:'便利店购物',sub:'在全家买东西结账',lv:'N5',npc:'收银员',steps:[
+  {w:'npc',jp:'いらっしゃいませ！',r:'いらっしゃいませ！',cn:'欢迎光临！'},
+  {w:'ys',jp:'これをください。あと、温めてもらえますか？',r:'これをください。あと、あたためてもらえますか？',cn:'请给我这个。另外，能帮我加热吗？'},
+  {w:'npc',jp:'はい。お弁当ですね。合計で580円です。袋はご利用ですか？',r:'はい。おべんとうですね。ごうけいでごひゃくはちじゅうえんです。',cn:'好的，是便当对吗？合计580日元，需要袋子吗？'},
+  {w:'c',opts:[{jp:'いいえ、袋は結構です。',r:'いいえ、ふくろはけっこうです。',cn:'不，不需要袋子。',ok:1},{jp:'はい、お願いします。',r:'はい、おねがいします。',cn:'是的，麻烦了。',ok:1},{jp:'トイレはどこ？',r:'といれはどこ？',cn:'厕所在哪？',ok:0}]},
+  {w:'npc',jp:'ポイントカードはお持ちですか？',r:'ぽいんとかーどはおもちですか？',cn:'您有积分卡吗？'},
+  {w:'c',opts:[{jp:'いいえ、持っていません。',r:'いいえ、もっていません。',cn:'没有，我没有。',ok:1},{jp:'はい、これです。',r:'はい、これです。',cn:'有，在这里。',ok:1},{jp:'いくらですか？',r:'いくらですか？',cn:'多少钱？',ok:0}]},
+  {w:'npc',jp:'ありがとうございました！またお越しください！',r:'ありがとうございました！またおこしください！',cn:'谢谢惠顾！欢迎再来！'},
+  {w:'e'}
+]},
+{id:'doctor',e:'🏥',bg:'#1E0808',t:'医院看诊',sub:'向医生描述症状',lv:'N4',npc:'医生',steps:[
+  {w:'npc',jp:'どうされましたか？',r:'どうされましたか？',cn:'您怎么了？'},
+  {w:'c',opts:[{jp:'頭が痛くて、熱もあります。昨日から続いています。',r:'あたまがいたくて、ねつもあります。きのうからつづいています。',cn:'头痛，还发烧。从昨天就一直这样了。',ok:1},{jp:'お腹が空きました。',r:'おなかがすきました。',cn:'我肚子饿了。',ok:0}]},
+  {w:'npc',jp:'いつからですか？他に症状はありますか？薬アレルギーは？',r:'いつからですか？ほかにしょうじょうはありますか？くすりあれるぎーは？',cn:'从什么时候开始的？其他症状？药物过敏？'},
+  {w:'c',opts:[{jp:'昨日の夜からです。喉も少し痛いです。アレルギーはありません。',r:'きのうのよるからです。のどもすこしいたいです。',cn:'从昨晚开始的，喉咙也有点痛，没有过敏。',ok:1},{jp:'わかりません。',r:'わかりません。',cn:'我不知道。',ok:0}]},
+  {w:'npc',jp:'診察の結果、風邪ですね。薬を3日分出します。安静にしてください。',r:'しんさつのけっか、かぜですね。くすりをみっかぶんだします。あんせいにしてください。',cn:'诊断结果是感冒，给您开三天的药，请好好休息。'},
+  {w:'v',p:'用日语说"谢谢医生"'},
+  {w:'e'}
+]},
+{id:'hotel',e:'🏨',bg:'#080A1E',t:'酒店入住',sub:'在帝国酒店办理入住',lv:'N4',npc:'前台',steps:[
+  {w:'ys',jp:'チェックインをお願いします。田中という名前で予約しています。',r:'ちぇっくいんをおねがいします。たなかというなまえでよやくしています。',cn:'麻烦办理入住，预约名字是田中。'},
+  {w:'npc',jp:'田中様、ご予約確認いたしました。パスポートとクレジットカードをご提示ください。',r:'たなかさま、ごよやくかくにんいたしました。',cn:'田中先生/女士，已确认预约，请出示护照和信用卡。'},
+  {w:'c',opts:[{jp:'はい、こちらになります。',r:'はい、こちらになります。',cn:'好的，在这里。',ok:1},{jp:'ありがとう。',r:'ありがとう。',cn:'谢谢。',ok:0}]},
+  {w:'npc',jp:'1205号室です。朝食は7時から10時まで1階レストランで。Wi-Fiはパスワード「H2024」です。',r:'せんにひゃくごごうしつです。ちょうしょくはしちじからじゅうじまでいっかいれすとらんで。',cn:'是1205室，早餐在1楼餐厅7到10点，WiFi密码是H2024。'},
+  {w:'v',p:'用日语问"早餐包含在内吗？"'},
+  {w:'npc',jp:'はい、ご宿泊料金に含まれております。ごゆっくりお過ごしください。',r:'はい、ごしゅくはくりょうきんにふくまれております。',cn:'是的，包含在住宿费中。请好好享用。'},
+  {w:'e'}
+]},
+{id:'restaurant',e:'🍜',bg:'#1E1408',t:'餐厅用餐',sub:'在居酒屋点菜',lv:'N4',npc:'服务员',steps:[
+  {w:'npc',jp:'いらっしゃいませ。何名様ですか？',r:'いらっしゃいませ。なんめいさまですか？',cn:'欢迎光临，请问几位？'},
+  {w:'c',opts:[{jp:'4人です。個室はありますか？',r:'よにんです。こしつはありますか？',cn:'四位，有包间吗？',ok:1},{jp:'たくさんいます。',r:'たくさんいます。',cn:'很多人。',ok:0}]},
+  {w:'npc',jp:'個室はございます。こちらへどうぞ。お飲み物はいかがですか？',r:'こしつはございます。こちらへどうぞ。おのみものはいかがですか？',cn:'有包间，请往这边，请问要喝什么吗？'},
+  {w:'ys',jp:'生ビールを4つと枝豆を1つください。'},
+  {w:'npc',jp:'かしこまりました。ご料理のご注文はお決まりでしたらお呼びください。',r:'かしこまりました。',cn:'好的。菜品点好后请叫我。'},
+  {w:'v',p:'用日语点一道日本料理（例：唐揚げをください）'},
+  {w:'npc',jp:'かしこまりました。少々お待ちください！',r:'かしこまりました。しょうしょうおまちください！',cn:'好的，请稍候！'},
+  {w:'e'}
+]},
+{id:'lost',e:'🗺️',bg:'#150820',t:'浅草迷路',sub:'在浅草寺附近迷路求助',lv:'N5',npc:'当地人',steps:[
+  {w:'ys',jp:'すみません、浅草寺へはどうやって行けばいいですか？',r:'すみません、せんそうじへはどうやっていけばいいですか？',cn:'打扰一下，请问怎么去浅草寺？'},
+  {w:'npc',jp:'ここからすぐですよ！この道をまっすぐ行くと雷門が見えます。徒歩3分ほどです。',r:'ここからすぐですよ！このみちをまっすぐいくとかみなりもんがみえます。',cn:'从这里很近！沿这条路直走就能看到雷门，步行约3分钟。'},
+  {w:'c',opts:[{jp:'ありがとうございます！日本語が上手ですね！',r:'ありがとうございます！',cn:'谢谢！您日语说得真好！',ok:1},{jp:'地図を見せてください。',r:'ちずをみせてください。',cn:'请给我看地图。',ok:0}]},
+  {w:'npc',jp:'どういたしまして。旅行ですか？どこから来たんですか？',r:'どういたしまして。りょこうですか？どこからきたんですか？',cn:'不客气！是来旅游吗？你从哪里来？'},
+  {w:'v',p:'用日语回答你从哪里来'},
+  {w:'npc',jp:'そうですか！浅草を楽しんでくださいね！'},
+  {w:'e'}
+]},
+{id:'phone',e:'📱',bg:'#081E12',t:'电话预约',sub:'打电话预约发型屋',lv:'N4',npc:'美发师',steps:[
+  {w:'ys',jp:'もしもし、予約をしたいのですが。',r:'もしもし、よやくをしたいのですが。',cn:'喂，我想预约。'},
+  {w:'npc',jp:'ありがとうございます。いつがご希望ですか？',r:'ありがとうございます。いつがごきぼうですか？',cn:'谢谢，请问您希望什么时候？'},
+  {w:'c',opts:[{jp:'今週の土曜日の午後3時はいかがですか？',r:'こんしゅうのどようびのごごさんじはいかがですか？',cn:'本周六下午3点可以吗？',ok:1},{jp:'いつでもいいです。',r:'いつでもいいです。',cn:'什么时候都行。',ok:0}]},
+  {w:'npc',jp:'土曜3時ですね。承知しました。お名前とご連絡先を教えていただけますか？',r:'どようさんじですね。しょうちしました。',cn:'周六3点，好的，能告诉我您的名字和联系方式吗？'},
+  {w:'v',p:'用日语说出名字和电话号码'},
+  {w:'npc',jp:'ありがとうございます。土曜日にお待ちしております！',r:'ありがとうございます。どようびにおまちしております！',cn:'谢谢，周六恭候您的光临！'},
+  {w:'e'}
+]},
+{id:'bank',e:'🏦',bg:'#080E1E',t:'银行开户',sub:'在日本银行开设账户',lv:'N4',npc:'银行员',steps:[
+  {w:'ys',jp:'口座を開設したいのですが、どうすればいいですか？',r:'こうざをかいせつしたいのですが、どうすればいいですか？',cn:'我想开设账户，请问怎么办理？'},
+  {w:'npc',jp:'在留カードとパスポートと印鑑が必要です。お持ちですか？',r:'ざいりゅうかーどとぱすぽーとといんかんがひつようです。おもちですか？',cn:'需要在留卡、护照和印章，请问您带来了吗？'},
+  {w:'c',opts:[{jp:'はい、全部持ってきました。',r:'はい、ぜんぶもってきました。',cn:'是的，全部带来了。',ok:1},{jp:'印鑑がありません。',r:'いんかんがありません。',cn:'我没有印章。',ok:0}]},
+  {w:'npc',jp:'こちらの用紙にお名前、住所、電話番号をご記入ください。',r:'こちらのようしにおなまえ、じゅうしょ、でんわばんごうをごきにゅうください。',cn:'请在这张表格上填写姓名、地址、电话号码。'},
+  {w:'v',p:'用日语说"好的，我马上填写"'},
+  {w:'npc',jp:'通帳とカードは一週間ほどで郵送されます。',r:'つうちょうとかーどはいっしゅうかんほどでゆうそうされます。',cn:'存折和卡大约一周后邮寄给您。'},
+  {w:'e'}
+]},
+{id:'supermarket',e:'🛒',bg:'#061208',t:'超市购物',sub:'在日本超市找商品',lv:'N5',npc:'店员',steps:[
+  {w:'ys',jp:'すみません、お豆腐はどこにありますか？',r:'すみません、おとうふはどこにありますか？',cn:'打扰一下，豆腐在哪里？'},
+  {w:'npc',jp:'豆腐は冷蔵コーナーの2番通路にございます。',r:'とうふはれいぞうこーなーのにばんつうろにございます。',cn:'豆腐在冷藏区2号通道。'},
+  {w:'c',opts:[{jp:'ありがとうございます！卵もそこの近くにありますか？',r:'ありがとうございます！たまごもそこのちかくにありますか？',cn:'谢谢！鸡蛋也在那附近吗？',ok:1},{jp:'わかりました。',r:'わかりました。',cn:'明白了。',ok:0}]},
+  {w:'npc',jp:'卵は少し離れた5番通路です。ご案内しましょうか？',r:'たまごはすこしはなれたごばんつうろです。ごあんないしましょうか？',cn:'鸡蛋在稍微远一点的5号通道，需要我带您去吗？'},
+  {w:'v',p:'用日语说"不用了，谢谢您"或"麻烦你了"'},
+  {w:'e'}
+]},
+{id:'post',e:'📮',bg:'#1E0E08',t:'邮局寄快递',sub:'向中国寄送EMS',lv:'N4',npc:'邮局员',steps:[
+  {w:'ys',jp:'これを中国まで送りたいのですが。',r:'これをちゅうごくまでおくりたいのですが。',cn:'我想把这个寄到中国。'},
+  {w:'npc',jp:'EMS、SAL便、船便がございますが、いかがなさいますか？',r:'いーえむえす、さるびん、ふなびんがございますが、いかがなさいますか？',cn:'有EMS、SAL和船运，请问您选哪种？'},
+  {w:'c',opts:[{jp:'EMSでお願いします。早く届けたいので。',r:'EMSでおねがいします。はやくとどけたいので。',cn:'请用EMS，因为想快点到达。',ok:1},{jp:'一番安いのをください。',r:'いちばんやすいのをください。',cn:'请给我最便宜的。',ok:1}]},
+  {w:'npc',jp:'中身は何ですか？食品や液体は入っていますか？',r:'なかみはなんですか？しょくひんやえきたいははいっていますか？',cn:'里面是什么？有食品或液体吗？'},
+  {w:'c',opts:[{jp:'衣類と雑貨だけです。食品は入っていません。',r:'いるいとざっかだけです。しょくひんははいっていません。',cn:'只有衣物和杂货，没有食品。',ok:1},{jp:'秘密です。',r:'ひみつです。',cn:'是秘密。',ok:0}]},
+  {w:'npc',jp:'2800円になります。3〜5日でお届けします。'},
+  {w:'e'}
+]},
+{id:'gym',e:'💪',bg:'#0A081E',t:'健身房咨询',sub:'询问健身房会员资格',lv:'N4',npc:'前台',steps:[
+  {w:'ys',jp:'入会したいのですが、どのようなプランがありますか？',r:'にゅうかいしたいのですが、どのようなぷらんがありますか？',cn:'我想入会，请问有什么方案？'},
+  {w:'npc',jp:'月額8000円と年額80000円の2種類がございます。最初の月は無料体験もできます。',r:'げつがくはちせんえんとねんがくはちまんえんのにしゅるいがございます。',cn:'有月费8000和年费80000两种。第一个月可以免费体验。'},
+  {w:'c',opts:[{jp:'月額プランにします。24時間使えますか？',r:'げつがくぷらんにします。にじゅうよじかんつかえますか？',cn:'我选月费方案，可以24小时使用吗？',ok:1},{jp:'高いですね。',r:'たかいですね。',cn:'好贵啊。',ok:0}]},
+  {w:'npc',jp:'はい、24時間365日ご利用いただけます。シャワー設備もございます。',r:'はい、にじゅうよじかんさんびゃくろくじゅうごにちごりようできます。',cn:'是的，全年365天24小时可以使用，也有淋浴设施。'},
+  {w:'v',p:'用日语问"可以参观一下设施吗？"'},
+  {w:'e'}
+]},
+{id:'izakaya',e:'🍺',bg:'#1E1208',t:'居酒屋聚会',sub:'和日本朋友欢聚',lv:'N4',npc:'朋友',steps:[
+  {w:'npc',jp:'乾杯！お疲れ様！最近どう？仕事忙しい？',r:'かんぱい！おつかれさま！さいきんどう？しごといそがしい？',cn:'干杯！辛苦了！最近怎么样？工作忙吗？'},
+  {w:'c',opts:[{jp:'まあまあです。あなたは？日本語の勉強が大変で。',r:'まあまあです。あなたは？にほんごのべんきょうがたいへんで。',cn:'还好吧。你呢？学日语很辛苦。',ok:1},{jp:'ひみつです。',r:'ひみつです。',cn:'是秘密。',ok:0}]},
+  {w:'npc',jp:'えー！でも日本語うまいじゃないですか！どれくらい勉強してるの？',r:'えー！でもにほんごうまいじゃないですか！どれくらいべんきょうしてるの？',cn:'哎！但你日语很好呢！学了多久了？'},
+  {w:'v',p:'用日语回答你学了多久日语'},
+  {w:'npc',jp:'すごい！その調子で頑張って！乾杯もう一回！',r:'すごい！そのちょうしでがんばって！かんぱいもういっかい！',cn:'好厉害！继续加油！再干一杯！'},
+  {w:'e'}
+]},
+{id:'train',e:'🚂',bg:'#06101E',t:'电车延误处理',sub:'处理电车延误情况',lv:'N4',npc:'站务员',steps:[
+  {w:'ys',jp:'すみません、電車が遅れているようですが、どのくらいかかりますか？',r:'すみません、でんしゃがおくれているようですが、どのくらいかかりますか？',cn:'不好意思，电车好像延误了，大概要等多久？'},
+  {w:'npc',jp:'大変申し訳ございません。人身事故の影響で約20分の遅れが生じています。',r:'たいへんもうしわけございません。じんしんじこのえいきょうでやくにじっぷんのおくれがしょうじています。',cn:'非常抱歉，由于人身事故影响，预计延误约20分钟。'},
+  {w:'c',opts:[{jp:'分かりました。他のルートを教えていただけますか？',r:'わかりました。ほかのるーとをおしえていただけますか？',cn:'明白了，能告诉我其他路线吗？',ok:1},{jp:'なぜですか！？',r:'なぜですか！？',cn:'为什么！？',ok:0}]},
+  {w:'npc',jp:'2番線の急行電車もご利用いただけます。少し遠回りになりますが。',r:'にばんせんのきゅうこうでんしゃもごりようできます。',cn:'也可以乘坐2号站台的快速电车，会稍微绕远一点。'},
+  {w:'v',p:'用日语说"好的，谢谢告诉我"'},
+  {w:'e'}
+]},
+{id:'apartment',e:'🏠',bg:'#0A1A0A',t:'租房咨询',sub:'向房产中介找公寓',lv:'N3',npc:'中介',steps:[
+  {w:'ys',jp:'1LDKのアパートを探しています。駅から徒歩10分以内で、月8万円以内でありますか？',r:'いちえるでぃーけーのあぱーとをさがしています。',cn:'我在找1LDK的公寓，步行到车站10分钟以内，月租8万以内有吗？'},
+  {w:'npc',jp:'ございます。いくつかご紹介できます。ペット可や駐車場付きなどご希望はありますか？',r:'ございます。いくつかごしょうかいできます。',cn:'有的，可以为您介绍几套，有没有宠物可以、有停车场等特别要求？'},
+  {w:'c',opts:[{jp:'ペット可で日当たりが良い部屋がいいです。',r:'ぺっとかでひあたりがよいへやがいいです。',cn:'希望可以养宠物，采光好的房间。',ok:1},{jp:'安いのをください。',r:'やすいのをください。',cn:'给我便宜的。',ok:0}]},
+  {w:'npc',jp:'分かりました。礼金・敷金込みでご案内します。内見はいかがですか？',r:'わかりました。れいきん・しきんこみでごあんないします。ないけんはいかがですか？',cn:'明白了，我给您介绍含礼金押金的方案，要去看房吗？'},
+  {w:'v',p:'用日语说"好的，请安排看房"'},
+  {w:'e'}
+]},
+{id:'cooking',e:'👨‍🍳',bg:'#1E1804',t:'学做日料',sub:'向日本朋友学做寿司',lv:'N3',npc:'老师',steps:[
+  {w:'npc',jp:'今日は手巻き寿司の作り方を教えますね。まず酢飯を作ります。',r:'きょうはてまきずしのつくりかたをおしえますね。まずすめしをつくります。',cn:'今天教你做手卷寿司。首先做醋饭。'},
+  {w:'c',opts:[{jp:'酢飯はどうやって作るんですか？コツがありますか？',r:'すめしはどうやってつくるんですか？こつがありますか？',cn:'醋饭怎么做？有诀窍吗？',ok:1},{jp:'難しそうですね。',r:'むずかしそうですね。',cn:'看起来很难啊。',ok:0}]},
+  {w:'npc',jp:'ご飯に寿司酢を混ぜるだけ！コツは熱いうちに素早く混ぜること。切るように混ぜてください。',r:'ごはんにすしずをまぜるだけ！こつはあついうちにすばやくまぜること。',cn:'只需把寿司醋混进米饭！诀窍是趁热快速搅拌，要像切的动作一样混合。'},
+  {w:'v',p:'用日语说"我明白了，来试试"'},
+  {w:'npc',jp:'上手です！次は具材の切り方を教えますね。',r:'じょうずです！つぎはぐざいのきりかたをおしえますね。',cn:'做得很好！接下来教你切配料。'},
+  {w:'e'}
+]},
+{id:'karaoke',e:'🎤',bg:'#1A0820',t:'卡拉OK',sub:'和同事一起唱歌',lv:'N4',npc:'同事',steps:[
+  {w:'npc',jp:'今日のカラオケ楽しみ！何か歌う曲決まってる？',r:'きょうのからおけたのしみ！なにかうたうきょくきまってる？',cn:'今天的卡拉OK好期待！想好唱什么了吗？'},
+  {w:'c',opts:[{jp:'最近ハマってる日本語の歌を歌おうと思ってます！',r:'さいきんはまってるにほんごのうたをうたおうとおもってます！',cn:'我想唱最近很迷的日语歌！',ok:1},{jp:'わかりません。',r:'わかりません。',cn:'不知道。',ok:0}]},
+  {w:'npc',jp:'えー！日本語の曲歌えるんですか！？すごい！どんな曲が好き？J-POPとか？',r:'えー！にほんごのきょくうたえるんですか！？すごい！どんなきょくがすき？',cn:'哇！你能唱日语歌？！好厉害！喜欢什么类型的歌？J-POP？'},
+  {w:'v',p:'用日语说说你喜欢的音乐类型'},
+  {w:'npc',jp:'いいね！じゃあ一緒に歌おう！絶対盛り上がるよ！',r:'いいね！じゃあいっしょにうたおう！ぜったいもりあがるよ！',cn:'太棒了！那一起唱吧！肯定会很嗨的！'},
+  {w:'e'}
+]},
+{id:'travel',e:'✈️',bg:'#080E1E',t:'旅行计划',sub:'和旅行社规划京都之旅',lv:'N3',npc:'旅行顾问',steps:[
+  {w:'ys',jp:'3泊4日で京都を旅行したいのですが、おすすめのプランを教えていただけますか？',r:'さんぱくよっかできょうとをりょこうしたいのですが、',cn:'我想3晚4天游京都，能推荐一下行程吗？'},
+  {w:'npc',jp:'春の京都でしたら桜が最高ですね。食べ歩きメインですか、観光メインですか？',r:'はるのきょうとでしたらさくらがさいこうですね。',cn:'春天的京都樱花最棒了！您是以美食为主，还是以观光为主？'},
+  {w:'c',opts:[{jp:'食べ歩きを中心に、有名な神社も少し行きたいです。',r:'たべあるきをちゅうしんに、ゆうめいなじんじゃもすこしいきたいです。',cn:'以美食游为主，也想顺便去几个有名神社。',ok:1},{jp:'なんでもいいです。',r:'なんでもいいです。',cn:'什么都行。',ok:0}]},
+  {w:'npc',jp:'では錦市場と伏見稲荷を組み合わせたプランがおすすめです。予算はおいくらですか？',r:'ではにしきいちばとふしみいなりをくみあわせたぷらんがおすすめです。',cn:'那推荐锦市场和伏见稻荷结合的行程，预算大约是多少？'},
+  {w:'v',p:'用日语说出你的大概预算（比如一人10万円ぐらいです）'},
+  {w:'e'}
+]},
+];
+
+// ═══ LISTEN DATA ═══
+const LDB=[
+ {jp:'おはようございます。',r:'おはようございます。',opts:['早上好。','晚安。','你好。','再见。'],ans:0,l:'N5'},
+ {jp:'コーヒーを一杯ください。',r:'こーひーをいっぱいください。',opts:['请给我一杯咖啡。','请给我两杯茶。','这个多少钱？','我喜欢咖啡。'],ans:0,l:'N5'},
+ {jp:'ここから駅まで遠いですか？',r:'ここからえきまでとおいですか？',opts:['从学校到这里远吗？','车站在哪里？','从这里到车站远吗？','我迷路了。'],ans:2,l:'N5'},
+ {jp:'電車は何時に出発しますか？',r:'でんしゃはなんじにしゅっぱつしますか？',opts:['电车到哪里去？','电车票多少钱？','电车几点出发？','电车多久来一班？'],ans:2,l:'N5'},
+ {jp:'このあたりにコンビニはありますか？',r:'このあたりにこんびにはありますか？',opts:['这附近有便利店吗？','便利店在哪里？','这家便利店有什么？','便利店几点开门？'],ans:0,l:'N5'},
+ {jp:'日本語を毎日勉強しています。',r:'にほんごをまいにちべんきょうしています。',opts:['我在学日语。','我每天学日语。','我喜欢日语。','日语很难吗？'],ans:1,l:'N5'},
+ {jp:'昨日は映画を見に行きました。',r:'きのうはえいがをみにいきました。',opts:['明天去看电影。','昨天去看了电影。','我喜欢看电影。','昨天买了书。'],ans:1,l:'N4'},
+ {jp:'来週旅行に行く予定です。',r:'らいしゅうりょこうにいくよていです。',opts:['上周去了旅行。','这周在旅行中。','下周预定去旅行。','旅行是什么时候？'],ans:2,l:'N4'},
+ {jp:'日本語が話せるようになりました。',r:'にほんごがはなせるようになりました。',opts:['日语变难了。','我能说日语了。','我想说日语。','日语学了多久？'],ans:1,l:'N4'},
+ {jp:'会議は3時間かかりました。',r:'かいぎはさんじかんかかりました。',opts:['会议在3点开始。','会议有3个人。','会议花了3小时。','会议取消了。'],ans:2,l:'N4'},
+ {jp:'予約はいりますか？',r:'よやくはいりますか？',opts:['需要预约吗？','预约多少钱？','可以预约吗？','预约在哪里？'],ans:0,l:'N4'},
+ {jp:'この問題はどうすれば解決できますか？',r:'このもんだいはどうすればかいけつできますか？',opts:['这个问题是什么？','这个问题很难。','怎样才能解决这个问题？','谁能解决这个问题？'],ans:2,l:'N3'},
+];
+const ST={
+  lv:'n5',xp:340,streak:3,
+  learned:new Set(),wrong:new Set(),
+  curCat:'日常用语',gramF:'all',
+  quiz:{type:'',words:[],idx:0,score:0,wrongW:[],wt:null},
+  dlg:{scene:null,step:0},
+  ls:{items:[],idx:0,answered:false,wt:null},
+};
+const LVC={
+  beginner:{label:'完全零基础',badge:'あ',bc:'#3ECF8E',desc:'从五十音图开始，零基础入门',ws:['N5'],gs:['N5']},
+  n5:{label:'N5 初级',badge:'N5',bc:'#5B8DEF',desc:'会基础词汇和简单日常用语（推荐你现在的水平）',ws:['N5','N4'],gs:['N5','N4']},
+  n4:{label:'N4 初中级',badge:'N4',bc:'#F5A623',desc:'能处理日常对话，想进一步提高',ws:['N4','N3'],gs:['N4','N3']},
+  n3:{label:'N3 中级',badge:'N3',bc:'#FF4D4D',desc:'有较好基础，冲击中级日语认定',ws:['N3','N4'],gs:['N3']},
+};
+const LVCOL={N5:{bg:'rgba(62,207,142,0.13)',c:'#3ECF8E'},N4:{bg:'rgba(91,141,239,0.13)',c:'#5B8DEF'},N3:{bg:'rgba(167,139,250,0.13)',c:'#A78BFA'}};
+
+// ═══ HELPERS ═══
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2300)}
+function speak(txt){
+  if(!window.speechSynthesis){toast('浏览器不支持语音');return}
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang='ja-JP';u.rate=0.82;u.pitch=1.05;
+  const vv=window.speechSynthesis.getVoices();
+  const v=vv.find(x=>x.lang&&x.lang.startsWith('ja'));
+  if(v)u.voice=v;
+  window.speechSynthesis.speak(u);
+}
+function addXP(n){
+  ST.xp+=n;
+  document.getElementById('hxp').textContent=ST.xp;
+  document.getElementById('hs-x').textContent=ST.xp;
+  toast('⚡ +'+n+' XP');
+}
+function getWords(){
+  const cfg=LVC[ST.lv]||LVC.n5;
+  const out={};
+  Object.entries(VDB).forEach(([cat,ws])=>{
+    const f=ws.filter(w=>cfg.ws.includes(w.l));
+    if(f.length)out[cat]=f;
+  });
+  return out;
+}
+
+// ═══ LEVEL SELECT ═══
+let selLv='n5';
+(function initLvCards(){
+  document.getElementById('lvcards').innerHTML=Object.entries(LVC).map(([k,v])=>
+    `<div class="lvcard ${k==='n5'?'sel':''}" id="lvc-${k}" onclick="pickLv('${k}')">
+      <div class="lvbadge" style="background:${v.bc}22;color:${v.bc}">${v.badge}</div>
+      <div><div class="lvname">${v.label}</div><div class="lvdesc">${v.desc}</div></div>
+    </div>`).join('');
+})();
+function pickLv(k){
+  selLv=k;
+  document.querySelectorAll('.lvcard').forEach(e=>e.classList.remove('sel'));
+  document.getElementById('lvc-'+k).classList.add('sel');
+}
+function confirmLv(){
+  ST.lv=selLv;
+  document.getElementById('lvscreen').style.display='none';
+  document.getElementById('topbar').style.display='block';
+  document.getElementById('pages').style.display='block';
+  document.getElementById('bnav').style.display='flex';
+  initAll();
+}
+
+// ═══ NAVIGATION ═══
+function goPg(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.getElementById('nb-'+id).classList.add('on');
+  if(id==='listen')buildListen();
+  document.querySelector('.pages').scrollTop=0;
+}
+
+// ═══ INIT ALL ═══
+function initAll(){
+  const cfg=LVC[ST.lv]||LVC.n5;
+  document.getElementById('hero-lv').textContent=cfg.label+' · 学习路径';
+  document.getElementById('hero-title').textContent='継続は力なり\n一緒に頑張ろう！';
+  buildHomeQA();buildHomeLessons();
+  buildVocab();buildScenes();buildGrammar();buildListen();
+  window.speechSynthesis&&window.speechSynthesis.getVoices();
+}
+
+// ═══ HOME ═══
+function buildHomeQA(){
+  document.getElementById('homeqa').innerHTML=[
+    {e:'🎯',l:'选择题',s:'看词选义',f:"startQuiz('mcq')"},
+    {e:'🎧',l:'听音选词',s:'训练听力',f:"startQuiz('listen')"},
+    {e:'🃏',l:'翻卡记忆',s:'间隔复习',f:"startQuiz('flash')"},
+    {e:'💬',l:'场景对话',s:'口语实战',f:"goPg('dialog')"},
+    {e:'🔴',l:'错词专攻',s:'攻克弱点',f:"startQuiz('wrong')"},
+  ].map(q=>`<div class="qacard" onclick="${q.f}">
+    <div class="qa-ico">${q.e}</div>
+    <div class="qa-lbl">${q.l}</div>
+    <div class="qa-sub">${q.s}</div>
+  </div>`).join('');
+}
+function buildHomeLessons(){
+  const cfg=LVC[ST.lv]||LVC.n5;
+  document.getElementById('homelessons').innerHTML=[
+    {i:'🏷️',c:cfg.bc,n:'今日单词 · '+cfg.label,m:'全场景词汇，含例句讲解',f:"goPg('vocab')"},
+    {i:'🎧',c:'#5B8DEF',n:'听力练习 · 12道题',m:'真实场景日语听力训练',f:"goPg('listen')"},
+    {i:'💬',c:'#F5A623',n:'场景对话 · 18个场景',m:'含语音输入，真实口语练习',f:"goPg('dialog')"},
+    {i:'📖',c:'#A78BFA',n:'语法精讲 · N5-N3共20点',m:'系统语法学习，含例句发音',f:"goPg('grammar')"},
+  ].map(l=>`<div class="tlitem" onclick="${l.f}">
+    <div class="tl-ico" style="background:${l.c}22;color:${l.c}">${l.i}</div>
+    <div class="tl-info"><div class="tl-n">${l.n}</div><div class="tl-m">${l.m}</div></div>
+    <div class="tl-arr">›</div>
+  </div>`).join('');
+}
+
+// ═══ VOCAB ═══
+function buildVocab(){
+  const db=getWords();
+  const cats=Object.keys(db);
+  if(!cats.includes(ST.curCat))ST.curCat=cats[0];
+  document.getElementById('catbar').innerHTML=cats.map(c=>
+    `<div class="cchip ${c===ST.curCat?'on':''}" onclick="switchCat('${c}')">${c}</div>`).join('');
+  const words=db[ST.curCat]||[];
+  document.getElementById('hs-w').textContent=ST.learned.size;
+  document.getElementById('wlist').innerHTML=words.map((w,i)=>{
+    const lc=LVCOL[w.l]||LVCOL.N5;
+    const tags=w.tags?`<div class="wctags">${w.tags.map(t=>`<span class="wctag">${t}</span>`).join('')}</div>`:'';
+    const ex=w.ex;
+    const exHl=ex?ex.jp.replace(ex.hl,`<span class="wcex-hl">${ex.hl}</span>`):'';
+    const known=ST.learned.has(w.jp);
+    return `<div class="wcard ${known?'':''}${ST.wrong.has(w.jp)?' wrongcard':''}" id="wc${i}">
+      <div class="wctop" onclick="toggleWC(${i})">
+        <div class="wcl">
+          <div class="wcjp">${w.jp}</div>
+          <div class="wcrd">${w.r}</div>
+          <div class="wccn">${w.cn}${known?' <span style="color:var(--grn);font-size:13px">✓</span>':''}</div>
+        </div>
+        <div class="wcr">
+          <span class="wclv" style="background:${lc.bg};color:${lc.c}">${w.l}</span>
+          <button class="wcau" onclick="event.stopPropagation();speak('${w.jp}')">🔊</button>
+        </div>
+      </div>
+      <div class="wcdet">
+        ${ex?`<div class="wcex">
+          <div class="wcex-jp">${exHl}</div>
+          <div class="wcex-rd">${ex.r}</div>
+          <div class="wcex-cn">${ex.cn}</div>
+        </div>`:''}
+        ${tags}
+        <button class="wcknown ${known?'done':''}" onclick="markKnown(${i},'${w.jp}')">
+          ${known?'✓ 已掌握 (点击取消)':'✓ 标记为已掌握 +5XP'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function switchCat(c){ST.curCat=c;buildVocab()}
+function toggleWC(i){const c=document.getElementById('wc'+i);c.classList.toggle('open')}
+function markKnown(i,jp){
+  if(ST.learned.has(jp)){ST.learned.delete(jp)}
+  else{ST.learned.add(jp);ST.wrong.delete(jp);addXP(5)}
+  buildVocab();
+}
+
+// ═══ QUIZ ENGINE ═══
+function startQuiz(type){
+  if(type==='wrong'){
+    const ww=Object.values(VDB).flat().filter(w=>ST.wrong.has(w.jp));
+    if(!ww.length){toast('暂无错词！继续学习吧 💪');return}
+    ST.quiz={type,words:ww.sort(()=>Math.random()-0.5).slice(0,Math.min(12,ww.length)),idx:0,score:0,wrongW:[],wt:null};
+  }else{
+    const all=Object.values(getWords()).flat();
+    ST.quiz={type,words:all.sort(()=>Math.random()-0.5).slice(0,12),idx:0,score:0,wrongW:[],wt:null};
+  }
+  document.getElementById('quiz-ov').classList.add('on');
+  renderQ();
+}
+function closeQuiz(){
+  if(ST.quiz.wt)clearInterval(ST.quiz.wt);
+  document.getElementById('quiz-ov').classList.remove('on');
+}
+function updateQHeader(){
+  const Q=ST.quiz;
+  document.getElementById('qpbar').style.width=(Q.idx/Q.words.length*100)+'%';
+  document.getElementById('qcnt').textContent=(Q.idx+1)+'/'+Q.words.length;
+}
+function renderQ(){
+  const Q=ST.quiz;
+  if(Q.idx>=Q.words.length){showResult();return}
+  updateQHeader();
+  const mode=Q.type==='wrong'?['mcq','listen','flash','fill'][Q.idx%4]:Q.type;
+  if(mode==='flash')renderFlash();
+  else if(mode==='listen')renderListenQ();
+  else if(mode==='fill')renderFillBlank();
+  else renderMCQ();
+}
+// ── Flashcard ──
+function renderFlash(){
+  const w=ST.quiz.words[ST.quiz.idx];
+  const lc=LVCOL[w.l]||LVCOL.N5;
+  const ex=w.ex;
+  document.getElementById('qbody').innerHTML=`
+    <div class="qmode">翻卡记忆</div>
+    <div class="flipwrap" id="fw" onclick="doFlip()">
+      <div class="flipinner">
+        <div class="flipf">
+          <div class="ff-hint">点击翻转查看答案</div>
+          <div class="ff-word">${w.jp}</div>
+          <div class="ff-read">${w.r}</div>
+        </div>
+        <div class="flipb">
+          <span class="fb-lv" style="background:${lc.bg};color:${lc.c}">${w.l}</span>
+          <div class="fb-cn">${w.cn}</div>
+          <div class="fb-read">${w.r}</div>
+          ${ex?`<div class="fb-ex">${ex.jp.replace(ex.hl,`<span class="fb-hl">${ex.hl}</span>`)}<br><span style="opacity:0.55;font-size:12px">${ex.cn}</span></div>`:''}
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center"><button onclick="speak('${w.jp}')" style="background:var(--s2);border:none;border-radius:20px;padding:7px 16px;color:var(--t2);font-size:13px;cursor:pointer">🔊 听发音</button></div>
+    <div class="rbtns hidden" id="rbtns">
+      <button class="rb rb-again" onclick="rateFlash('again')">😅 再记一次</button>
+      <button class="rb rb-good" onclick="rateFlash('good')">😊 记住了</button>
+      <button class="rb rb-easy" onclick="rateFlash('easy')">🎉 轻松掌握</button>
+    </div>
+    <div style="text-align:center;font-size:12px;color:var(--t3)" id="flipHint">翻转后评价掌握程度</div>`;
+}
+function doFlip(){
+  const fw=document.getElementById('fw');
+  fw.classList.toggle('flipped');
+  if(fw.classList.contains('flipped')){
+    document.getElementById('rbtns').classList.remove('hidden');
+    const h=document.getElementById('flipHint');if(h)h.style.display='none';
+    speak(ST.quiz.words[ST.quiz.idx].jp);
+  }
+}
+function rateFlash(r){
+  const w=ST.quiz.words[ST.quiz.idx];
+  if(r!=='again'){ST.quiz.score++;ST.learned.add(w.jp);ST.wrong.delete(w.jp)}
+  else{ST.wrong.add(w.jp);ST.quiz.wrongW.push(w)}
+  ST.quiz.idx++;renderQ();
+}
+// ── MCQ ──
+function renderMCQ(){
+  const w=ST.quiz.words[ST.quiz.idx];
+  const all=Object.values(VDB).flat();
+  const w3=all.filter(x=>x.cn!==w.cn).sort(()=>Math.random()-0.5).slice(0,3);
+  const opts=[...w3.map(x=>({cn:x.cn,ok:0})),{cn:w.cn,ok:1}].sort(()=>Math.random()-0.5);
+  const ex=w.ex;
+  document.getElementById('qbody').innerHTML=`
+    <div class="qmode">看词选义</div>
+    <div class="mcqstem">
+      <div class="mcqword">${w.jp}</div>
+      <div class="mcqread">${w.r}</div>
+      <button class="mcqau" onclick="speak('${w.jp}')">🔊 听发音</button>
+    </div>
+    <div class="mcqopts">${opts.map(o=>`<button class="mcqopt" onclick="checkMCQ(this,${o.ok},'${w.jp.replace(/'/g,"\\'")}','${w.cn.replace(/'/g,"\\'")}')">${o.cn}</button>`).join('')}</div>
+    ${ex?`<div class="exbox"><div class="exbox-t">例句参考</div><div class="exbox-jp">${ex.jp}</div><div class="exbox-cn">${ex.cn}</div></div>`:''}`;
+}
+function checkMCQ(el,ok,jp,cn){
+  document.querySelectorAll('.mcqopt').forEach(o=>o.setAttribute('disabled',''));
+  if(ok){el.classList.add('ok');ST.quiz.score++;ST.learned.add(jp);ST.wrong.delete(jp)}
+  else{el.classList.add('ng');ST.wrong.add(jp);ST.quiz.wrongW.push(ST.quiz.words[ST.quiz.idx]);
+    document.querySelectorAll('.mcqopt').forEach(o=>{if(o.textContent===cn)o.classList.add('ok')})}
+  setTimeout(()=>{ST.quiz.idx++;renderQ()},1350);
+}
+// ── Listen Quiz ──
+function renderListenQ(){
+  const w=ST.quiz.words[ST.quiz.idx];
+  const all=Object.values(VDB).flat();
+  const w3=all.filter(x=>x.cn!==w.cn).sort(()=>Math.random()-0.5).slice(0,3);
+  const opts=[...w3.map(x=>x.cn),w.cn].sort(()=>Math.random()-0.5);
+  const bars=Array.from({length:10},(_,i)=>`<div class="wbar" id="qb${i}" style="height:7px"></div>`).join('');
+  document.getElementById('qbody').innerHTML=`
+    <div class="qmode">听音选义</div>
+    <div class="lsitem">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:12px">先听日语发音，再选出正确的中文意思</div>
+      <div class="wavrow">${bars}</div>
+      <button class="lplay" id="qlplay" onclick="playQlisten()">▶</button>
+      <div class="lshint">点击播放</div>
+    </div>
+    <div class="mcqopts">${opts.map(o=>`<button class="mcqopt" onclick="checkLQ(this,${o===w.cn},'${w.jp.replace(/'/g,"\\'")}','${w.cn.replace(/'/g,"\\'")}')">${o}</button>`).join('')}</div>`;
+}
+function playQlisten(){
+  const w=ST.quiz.words[ST.quiz.idx];
+  const btn=document.getElementById('qlplay');
+  if(!btn)return;
+  btn.classList.add('on');btn.textContent='■';
+  if(ST.quiz.wt)clearInterval(ST.quiz.wt);
+  ST.quiz.wt=setInterval(()=>{for(let i=0;i<10;i++){const b=document.getElementById('qb'+i);if(b)b.style.height=(5+Math.random()*20)+'px'}},110);
+  speak(w.jp);
+  setTimeout(()=>{if(btn){btn.classList.remove('on');btn.textContent='▶'}if(ST.quiz.wt){clearInterval(ST.quiz.wt);ST.quiz.wt=null}for(let i=0;i<10;i++){const b=document.getElementById('qb'+i);if(b)b.style.height='7px'}},2600);
+}
+function checkLQ(el,ok,jp,cn){
+  document.querySelectorAll('.mcqopt').forEach(o=>o.setAttribute('disabled',''));
+  if(ok){el.classList.add('ok');ST.quiz.score++;ST.learned.add(jp);ST.wrong.delete(jp)}
+  else{el.classList.add('ng');ST.wrong.add(jp);ST.quiz.wrongW.push(ST.quiz.words[ST.quiz.idx]);
+    document.querySelectorAll('.mcqopt').forEach(o=>{if(o.textContent===cn)o.classList.add('ok')})}
+  setTimeout(()=>{ST.quiz.idx++;renderQ()},1350);
+}
+// ── Result ──
+function showResult(){
+  const Q=ST.quiz;
+  const pct=Math.round(Q.score/Q.words.length*100);
+  const gained=Q.score*10;
+  addXP(gained);
+  const wrongHtml=Q.wrongW.length?`<div class="wrongsec">
+    <div class="wrongsec-t">❌ 错误单词（${Q.wrongW.length}个）· 已加入错词本</div>
+    ${Q.wrongW.map(w=>`<div class="wrongitem">
+      <div class="wi-jp">${w.jp}</div>
+      <div class="wi-info"><div class="wi-cn">${w.cn} · ${w.r}</div></div>
+      <button class="wi-au" onclick="speak('${w.jp}')">🔊</button>
+    </div>`).join('')}
+  </div>`:'';
+  document.getElementById('qbody').innerHTML=`<div class="resultsc">
+    <div class="res-em">${pct>=80?'🏆':pct>=60?'🎉':'💪'}</div>
+    <div class="res-title">${pct>=80?'完璧です！':pct>=60?'よくできました！':'もっと頑張ろう！'}</div>
+    <div class="res-sub">答对 ${Q.score}/${Q.words.length} · 正确率 ${pct}% · +${gained} XP</div>
+    <div class="resstats">
+      <div class="rsstat"><div class="rsstat-n" style="color:var(--grn)">${Q.score}</div><div class="rsstat-l">正确</div></div>
+      <div class="rsstat"><div class="rsstat-n" style="color:var(--amb)">${pct}%</div><div class="rsstat-l">正确率</div></div>
+      <div class="rsstat"><div class="rsstat-n" style="color:var(--blu)">${gained}</div><div class="rsstat-l">XP奖励</div></div>
+    </div>
+    ${wrongHtml}
+    <div class="resbtns">
+      ${Q.wrongW.length?`<button class="resbtn resbtn-r" onclick="closeQuiz();startQuiz('wrong')">🔴 专练错词 (${Q.wrongW.length}个)</button>`:''}
+      <button class="resbtn resbtn-p" onclick="startQuiz('${Q.type}')">再来一轮</button>
+      <button class="resbtn resbtn-s" onclick="closeQuiz()">返回</button>
+    </div>
+  </div>`;
+  document.getElementById('qpbar').style.width='100%';
+  document.getElementById('qcnt').textContent='完成！';
+}
+
+// ═══ DIALOG ═══
+function buildScenes(){
+  const LVSC={N5:{bg:'rgba(62,207,142,0.13)',c:'#3ECF8E'},N4:{bg:'rgba(91,141,239,0.13)',c:'#5B8DEF'},N3:{bg:'rgba(167,139,250,0.13)',c:'#A78BFA'}};
+  const sc=document.getElementById('scene-count');if(sc)sc.textContent=SCENES.length;
+  document.getElementById('scenegrip').innerHTML=SCENES.map(s=>{
+    const lc=LVSC[s.lv]||LVSC.N5;
+    return `<div class="scard" onclick="startConvo('${s.id}')" style="background:${s.bg}">
+      <div class="sc-e">${s.e}</div>
+      <div class="sc-t">${s.t}</div>
+      <div class="sc-sub">${s.sub}</div>
+      <span class="sc-lv" style="background:${lc.bg};color:${lc.c}">${s.lv}</span>
+      ${s.done?'<div class="sc-done">✓</div>':''}
+    </div>`;
+  }).join('');
+}
+function startConvo(id){
+  const s=SCENES.find(x=>x.id===id);if(!s)return;
+  ST.dlg={scene:s,step:0};
+  document.getElementById('cav').textContent=s.e;
+  document.getElementById('cname').textContent=s.t+' · '+s.npc;
+  document.getElementById('cmsgs').innerHTML='';
+  document.getElementById('caction').innerHTML='';
+  document.getElementById('convopanel').classList.add('on');
+  setTimeout(stepConvo,400);
+}
+function closeConvo(){document.getElementById('convopanel').classList.remove('on')}
+function stepConvo(){
+  const {scene,step}=ST.dlg;
+  if(step>=scene.steps.length)return;
+  const s=scene.steps[step];
+  if(s.w==='npc'||s.w==='ys'){
+    addBubble(s.w==='ys'?'me':'npc',s);
+    ST.dlg.step++;
+    const nx=scene.steps[ST.dlg.step];
+    if(nx&&nx.w!=='c'&&nx.w!=='v'&&nx.w!=='e')setTimeout(stepConvo,680);
+    else if(nx)setTimeout(stepConvo,750);
+  }else if(s.w==='c'){showChoices(s.opts)}
+  else if(s.w==='v'){showVoice(s.p)}
+  else if(s.w==='e'){showConvoEnd()}
+}
+function addBubble(who,d){
+  const msgs=document.getElementById('cmsgs');
+  const isMe=who==='me';
+  msgs.innerHTML+=`<div class="mrow ${isMe?'me':''}">
+    <div class="mav">${isMe?'🧑':'🧑‍💼'}</div>
+    <div class="bubble">
+      <div class="b-jp">${d.jp}</div>
+      ${d.r?`<div class="b-rd">${d.r}</div>`:''}
+      ${d.cn?`<div class="b-cn">${d.cn}</div>`:''}
+      <button class="b-sp" onclick="speak('${(d.jp||'').replace(/'/g,"\\'").replace(/\n/g,' ')}')">🔊</button>
+    </div>
+  </div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function showChoices(opts){
+  document.getElementById('caction').innerHTML=`<div class="choicearea">
+    <div class="ca-hint">选择你的回答</div>
+    ${opts.map((o,i)=>`<button class="cbtn" onclick="pickC(${i},${o.ok||0})" data-jp="${(o.jp||'').replace(/"/g,'&quot;')}" data-r="${(o.r||'').replace(/"/g,'&quot;')}" data-cn="${(o.cn||'').replace(/"/g,'&quot;')}">
+      <div class="cb-jp">${o.jp}</div>
+      <div class="cb-cn">${o.cn}</div>
+    </button>`).join('')}
+  </div>`;
+}
+function pickC(i,ok){
+  const btns=document.querySelectorAll('.cbtn');
+  btns.forEach(b=>b.style.pointerEvents='none');
+  if(ok){
+    btns[i].classList.add('ok');
+    const b=btns[i];
+    const d={jp:b.dataset.jp,r:b.dataset.r,cn:b.dataset.cn};
+    setTimeout(()=>{
+      addBubble('me',d);
+      document.getElementById('caction').innerHTML='';
+      ST.dlg.step++;setTimeout(stepConvo,680);
+    },380);
+  }else{
+    btns[i].classList.add('ng');
+    setTimeout(()=>{btns[i].classList.remove('ng');btns.forEach(b=>b.style.pointerEvents='auto')},880);
+  }
+}
+// ── Voice Input ──
+let recognizer=null;
+function showVoice(prompt){
+  document.getElementById('caction').innerHTML=`<div class="voicearea">
+    <div class="vprompt">🎤 ${prompt||'请用日语回答'}</div>
+    <div class="vrow">
+      <button class="vbtn" id="vbtn" onclick="toggleRec()">🎤</button>
+      <div class="vtranscript" id="vtrans">按麦克风开始录音...</div>
+      <button class="vsend" onclick="sendVoice()">发送</button>
+    </div>
+    <input class="vtxt" id="vtxtinput" placeholder="或在此处直接输入日语" type="text">
+    <div style="font-size:11px;color:var(--t3);margin-top:6px;text-align:center">发音后点发送，或直接在输入框输入后点发送</div>
+  </div>`;
+}
+function toggleRec(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById('vbtn');
+  if(!SR){
+    document.getElementById('vtrans').textContent='此设备不支持语音识别，请在输入框输入';
+    return;
+  }
+  if(recognizer&&recognizer._running){recognizer.stop();return}
+  recognizer=new SR();
+  recognizer.lang='ja-JP';recognizer.continuous=false;recognizer.interimResults=true;
+  recognizer._running=true;
+  btn.classList.add('rec');btn.textContent='⏹';
+  recognizer.onresult=e=>{
+    const t=Array.from(e.results).map(r=>r[0].transcript).join('');
+    const el=document.getElementById('vtrans');if(el)el.textContent=t;
+  };
+  recognizer.onend=()=>{const b=document.getElementById('vbtn');if(b){b.classList.remove('rec');b.textContent='🎤'}recognizer._running=false};
+  recognizer.onerror=()=>{const b=document.getElementById('vbtn');if(b){b.classList.remove('rec');b.textContent='🎤'}recognizer._running=false};
+  recognizer.start();
+}
+function sendVoice(){
+  const trans=document.getElementById('vtrans');
+  const inp=document.getElementById('vtxtinput');
+  let text=(inp&&inp.value.trim())||(trans&&trans.textContent)||'';
+  if(!text||text==='按麦克风开始录音...'||text==='此设备不支持语音识别，请在输入框输入'){
+    text='はい、わかりました。';
+  }
+  addBubble('me',{jp:text,r:'',cn:'（你说的）'});
+  document.getElementById('caction').innerHTML='';
+  ST.dlg.step++;setTimeout(stepConvo,680);
+}
+function showConvoEnd(){
+  const s=SCENES.find(x=>x.id===ST.dlg.scene.id);
+  if(s)s.done=true;
+  document.getElementById('caction').innerHTML=`<div class="choicearea" style="text-align:center">
+    <div style="font-size:38px;margin-bottom:8px">🎉</div>
+    <div style="font-size:16px;font-weight:700;color:var(--grn);margin-bottom:4px">対話完了！ +30 XP</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:16px">太棒了！成功完成了这个场景</div>
+    <button style="background:var(--blu);color:#fff;border:none;border-radius:var(--r);padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-bottom:8px" onclick="closeConvo();buildScenes()">选择其他场景</button>
+    <button style="background:var(--s2);color:var(--t2);border:none;border-radius:var(--r);padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer;width:100%" onclick="startConvo('${ST.dlg.scene.id}')">再练一遍</button>
+  </div>`;
+  addXP(30);
+  buildScenes();
+}
+
+// ═══ LISTEN SCREEN ═══
+function buildListen(){
+  const cfg=LVC[ST.lv]||LVC.n5;
+  const pool=LDB.filter(q=>cfg.ws.includes(q.l)||q.l==='N5');
+  ST.ls={items:pool.sort(()=>Math.random()-0.5).slice(0,8),idx:0,answered:false,wt:null};
+  renderListen();
+}
+function renderListen(){
+  const L=ST.ls;
+  const c=document.getElementById('listencontent');
+  if(L.idx>=L.items.length){
+    c.innerHTML=`<div style="text-align:center;padding:50px 20px">
+      <div style="font-size:56px;margin-bottom:12px">🎧</div>
+      <div style="font-size:20px;font-weight:700;margin-bottom:6px">听力练习完成！</div>
+      <div style="font-size:14px;color:var(--t2);margin-bottom:24px">完成了 ${L.items.length} 道听力题</div>
+      <button style="background:var(--blu);color:#fff;border:none;border-radius:var(--r);padding:14px;font-size:15px;font-weight:600;cursor:pointer;width:80%" onclick="buildListen()">再练一遍</button>
+    </div>`;
+    addXP(20);return;
+  }
+  const q=L.items[L.idx];
+  L.answered=false;
+  const bars=Array.from({length:12},(_,i)=>`<div class="wbar" id="lb${i}" style="height:7px"></div>`).join('');
+  const ltrs=['A','B','C','D'];
+  c.innerHTML=`<div class="listencard">
+    <div class="lc-n">听力练习 ${L.idx+1} / ${L.items.length}</div>
+    <div class="lc-wave">${bars}</div>
+    <button class="lc-play" id="lcplay" onclick="playLI()">▶</button>
+    <div style="font-size:12px;color:var(--t3)">点击播放日语</div>
+    <div class="lc-text" id="lctext"></div>
+    <div class="lc-read" id="lcread"></div>
+  </div>
+  <div class="lsopts-title">选出正确的中文意思</div>
+  <div class="lsopts-wrap"><div class="lsopts">${q.opts.map((o,i)=>`
+    <div class="lsopt" onclick="checkLI(${i})">
+      <div class="lsopt-ltr">${ltrs[i]}</div>
+      <div class="lsopt-txt">${o}</div>
+    </div>`).join('')}
+  </div></div>`;
+}
+function playLI(){
+  const q=ST.ls.items[ST.ls.idx];
+  const btn=document.getElementById('lcplay');
+  if(!btn)return;
+  btn.classList.add('on');btn.textContent='■';
+  if(ST.ls.wt)clearInterval(ST.ls.wt);
+  ST.ls.wt=setInterval(()=>{for(let i=0;i<12;i++){const b=document.getElementById('lb'+i);if(b)b.style.height=(5+Math.random()*22)+'px'}},110);
+  speak(q.jp);
+  setTimeout(()=>{if(btn){btn.classList.remove('on');btn.textContent='▶'}if(ST.ls.wt){clearInterval(ST.ls.wt);ST.ls.wt=null}for(let i=0;i<12;i++){const b=document.getElementById('lb'+i);if(b)b.style.height='7px'}},2600);
+}
+function checkLI(i){
+  if(ST.ls.answered)return;
+  ST.ls.answered=true;
+  const q=ST.ls.items[ST.ls.idx];
+  const opts=document.querySelectorAll('.lsopt');
+  opts.forEach(o=>o.style.pointerEvents='none');
+  opts[q.ans].classList.add('ok');
+  if(i!==q.ans)opts[i].classList.add('ng');
+  const lt=document.getElementById('lctext');
+  const lr=document.getElementById('lcread');
+  if(lt)lt.textContent=q.jp;if(lr)lr.textContent=q.r;
+  setTimeout(()=>{ST.ls.idx++;renderListen()},1900);
+}
+
+// ═══ GRAMMAR ═══
+let gF='all';
+function buildGrammar(){
+  const cfg=LVC[ST.lv]||LVC.n5;
+  const filter=gF==='all'?['N5','N4','N3']:[gF];
+  const db=GDB.filter(g=>filter.includes(g.l));
+  const GLC={N5:{bg:'rgba(62,207,142,0.13)',c:'#3ECF8E'},N4:{bg:'rgba(91,141,239,0.13)',c:'#5B8DEF'},N3:{bg:'rgba(167,139,250,0.13)',c:'#A78BFA'}};
+  document.getElementById('glist').innerHTML=db.map(g=>{
+    const lc=GLC[g.l]||GLC.N5;
+    const saferd=(g.rd||'').replace(/'/g,"\\'");
+    return `<div class="gcard">
+      <div class="gctop">
+        <div class="gcnum" style="background:${lc.bg};color:${lc.c}">${String(g.n).padStart(2,'0')}</div>
+        <div><div class="gctitle">${g.title}</div><div class="gckey">${g.key}</div></div>
+      </div>
+      <div class="gcbody">
+        <div class="gcdesc">${g.desc}</div>
+        <div class="gcex">
+          <div class="gc-jp">${g.jp}</div>
+          <div class="gc-rd">${g.rd||''}</div>
+          <div class="gc-cn">${g.cn}</div>
+          <div class="gcfoot">
+            <span class="gclv" style="background:${lc.bg};color:${lc.c}">${g.l}</span>
+            <button class="gcspbtn" onclick="speak('${saferd}')">🔊 听例句</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterG(f,el){
+  gF=f;
+  document.querySelectorAll('.glt').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  buildGrammar();
+}
+
+// ═══ FILL BLANK QUIZ ═══
+function renderFillBlank(){
+  const w = ST.quiz.words[ST.quiz.idx];
+  const fb = ContentEngine.generateFillBlank(w);
+  if(!fb){ST.quiz.idx++;renderQ();return}
+  document.getElementById('qbody').innerHTML=`
+    <div class="qmode">填空练习</div>
+    <div class="fbstem">
+      <div class="fb-prompt">根据中文提示，填写划线处的日语单词</div>
+      <div class="fb-sentence">${fb.blank}</div>
+      <div class="fb-hint">提示：${fb.hint}（${w.r}）</div>
+      <button onclick="speak('${w.jp}')" style="background:var(--s2);border:none;border-radius:20px;padding:6px 14px;color:var(--t2);font-size:12px;cursor:pointer;margin-bottom:14px">🔊 听发音</button>
+      <input class="fb-inp" id="fb-inp" placeholder="输入日语..." type="text" 
+             onkeydown="if(event.key==='Enter')checkFill('${w.jp}','${w.cn}')">
+      <button class="fb-submit" onclick="checkFill('${w.jp.replace(/'/g,"\\'")}','${w.cn.replace(/'/g,"\\'")}')">确认答案</button>
+      <div class="fb-result" id="fb-result"></div>
+    </div>`;
+  setTimeout(()=>{const inp=document.getElementById('fb-inp');if(inp)inp.focus()},100);
+}
+function checkFill(correct,cn){
+  const inp=document.getElementById('fb-inp');
+  const res=document.getElementById('fb-result');
+  if(!inp||!res)return;
+  const val=inp.value.trim();
+  // Accept exact match or reading match
+  const w=ST.quiz.words[ST.quiz.idx];
+  const isOk = val===correct || val===w.r || val.toLowerCase()===correct.toLowerCase();
+  inp.disabled=true;
+  if(isOk){
+    inp.classList.add('ok');
+    res.style.color='var(--grn)';
+    res.textContent='✓ 正确！';
+    ST.quiz.score++;
+    ST.learned.add(correct);
+    ST.wrong.delete(correct);
+  }else{
+    inp.classList.add('ng');
+    res.style.color='var(--red)';
+    res.textContent='✗ 正确答案：'+correct+' ('+cn+')';
+    ST.wrong.add(correct);
+    ST.quiz.wrongW.push(ST.quiz.words[ST.quiz.idx]);
+  }
+  setTimeout(()=>{ST.quiz.idx++;renderQ()},1600);
+}
+
+// ═══ SETTINGS / API ═══
+function openSettings(){document.getElementById('settings-modal').classList.add('on')}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('on')}
+function saveSettings(){
+  const proxy=document.getElementById('ss-proxy').value.trim();
+  const key=document.getElementById('ss-key').value.trim();
+  if(proxy)localStorage.setItem('nihongo_proxy',proxy);
+  if(key)localStorage.setItem('nihongo_key',key);
+  API_CONFIG.workerUrl=proxy;
+  testConnection(proxy,key);
+}
+async function testConnection(proxy,key){
+  const area=document.getElementById('ss-status-area');
+  area.innerHTML='<div class="ss-status">⏳ 测试连接中...</div>';
+  try{
+    const result=await API_CONFIG.call('Reply with JSON: {"status":"ok","msg":"连接成功"}');
+    if(result&&result.status==='ok'){
+      area.innerHTML='<div class="ss-status ok">✓ '+result.msg+'！AI内容生成已激活</div>';
+    }else{
+      area.innerHTML='<div class="ss-status ng">✗ 连接失败，请检查代理地址</div>';
+    }
+  }catch(e){
+    area.innerHTML='<div class="ss-status ng">✗ 错误：'+e.message+'</div>';
+  }
+}
+
+// ═══ AI CONTENT GENERATION (with fallback) ═══
+async function aiGenerateVocab(category, level){
+  const result = await API_CONFIG.call(
+    `Generate 8 Japanese vocabulary words for JLPT ${level} level, category: "${category}".
+     Return JSON array: [{"jp":"日本語","r":"よみ","cn":"中文","l":"${level}","ex":{"jp":"例文","r":"よみ","cn":"中文","hl":"キーワード"}}]
+     Make them different from common words, practical for daily life.`,
+    'You are a Japanese language teacher. Reply with valid JSON array only.'
+  );
+  if(result&&Array.isArray(result)){
+    if(!VDB[category])VDB[category]=[];
+    result.forEach(w=>{if(!VDB[category].find(x=>x.jp===w.jp))VDB[category].push(w)});
+    buildVocab();
+    toast('✨ AI生成了'+result.length+'个新单词！');
+  }else{
+    // Fallback: generate from pattern
+    const existing=Object.values(VDB).flat();
+    const newWords=ContentEngine.getQuizPool(
+      existing.filter(w=>w.l===level&&!VDB[category]?.find(x=>x.jp===w.jp)),
+      4
+    );
+    toast('离线模式：从词库中补充了内容');
+  }
+}
+
+async function aiGenerateDialog(){
+  const result = await API_CONFIG.call(
+    `Create a new Japanese conversation scene for N4-N5 level.
+     Return JSON: {"id":"unique_id","e":"emoji","bg":"#hex","t":"场景名(中文)","sub":"描述(中文)","lv":"N4","npc":"角色名",
+     "steps":[{"w":"npc","jp":"日本語","r":"読み","cn":"中文"},{"w":"c","opts":[{"jp":"日本語","r":"読み","cn":"中文","ok":1},...]},...,{"w":"e"}]}
+     Steps should be: npc greet, player choice, npc respond, optional voice, npc end, e.
+     Keep Japanese simple for N4-N5 learners.`,
+    'Reply with valid JSON only.'
+  );
+  if(result&&result.id){
+    result.id='ai_'+Date.now();
+    SCENES.push(result);
+    buildScenes();
+    toast('✨ AI生成了新对话场景：'+result.t);
+  }else{
+    toast('生成失败，请检查API设置');
+  }
+}
+
+async function aiGenerateListen(){
+  const result = await API_CONFIG.call(
+    `Generate 4 Japanese listening questions for N4-N5 level.
+     Return JSON array: [{"jp":"日本語の文","r":"読み","opts":["正确中文","错误1","错误2","错误3"],"ans":0,"l":"N5"}]`,
+    'Reply with valid JSON array only.'
+  );
+  if(result&&Array.isArray(result)){
+    LDB.push(...result);
+    buildListen();
+    toast('✨ AI生成了'+result.length+'道新听力题！');
+  }else{
+    // Fallback: generate from vocab
+    const words=Object.values(getWords()).flat().sort(()=>Math.random()-0.5).slice(0,4);
+    const newQ=words.map(w=>ContentEngine.generateListenVariant(w));
+    LDB.push(...newQ);
+    buildListen();
+    toast('离线模式：从词库生成了听力题');
+  }
+}
+
+// ═══ PROGRESS DISPLAY ═══
+function buildProgress(){
+  const allWords=Object.values(VDB).flat();
+  const total=allWords.length;
+  const learned=allWords.filter(w=>ST.learned.has(w.jp)).length;
+  const wrong=allWords.filter(w=>ST.wrong.has(w.jp)).length;
+  return {total,learned,wrong,pct:Math.round(learned/total*100)};
+}
+
+
+// ═══ LOAD SAVED SETTINGS ═══
+(function loadSettings(){
+  const proxy=localStorage.getItem('nihongo_proxy')||'';
+  const key=localStorage.getItem('nihongo_key')||'';
+  if(proxy){API_CONFIG.workerUrl=proxy;document.getElementById('ss-proxy').value=proxy}
+  if(key){document.getElementById('ss-key').value=key}
+})();
+
+</script>
+</body>
+</html>
